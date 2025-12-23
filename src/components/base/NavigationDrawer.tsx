@@ -11,8 +11,10 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
-import { Button } from "../button";
+import { Button } from "../ui/button";
 import { Link, useLocation} from "react-router-dom";
+import { BellDot } from "lucide-react";
+
 
 const tabs = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/admin/dashboard" },
@@ -41,7 +43,7 @@ function NavigationDrawer({ children }: Props) {
     "flex md:flex-row flex-col items-center md:gap-4 font-light text-sm p-2 rounded-md  cursor-pointer";
 
   return (
-    <main className="relative max-h-screen bg-gray-50">
+    <main className="relative max-h-screen">
       {/* Mobile top bar */}
       <header className="fixed  bg-white top-0 z-50 flex w-full items-center justify-between border px-3 py-4 md:hidden">
         <span className="flex items-center gap-1.5">
@@ -51,7 +53,7 @@ function NavigationDrawer({ children }: Props) {
 
         <div className="flex gap-4">
           <Moon size={18} strokeWidth={1.5} />
-          <LogOut size={18} strokeWidth={1.5} />
+          <BellDot size={18} strokeWidth={1.5} />
         </div>
       </header>
       {/* Sidebar */}
@@ -103,6 +105,12 @@ function NavigationDrawer({ children }: Props) {
               {!rail && <span>Theme</span>}
               <Moon size={20} strokeWidth={1.5} />
             </div>
+
+            <div className={itemClasses}>
+              {!rail && <span>Notifications</span>}
+              <BellDot size={20} strokeWidth={1.5} />
+            </div>
+
 
             <div className={itemClasses}>
               {!rail && <span>Logout</span>}

@@ -1,8 +1,11 @@
+import Header from "@/components/base/Header"
 
 function Dashboard() {
   return (
-    <div>
-   
+    <div >
+   <Header heading="Dashboard" subheading="Welcome back Edi! Here's your hotel performance overview.">
+
+   </Header>
     </div>
   )
 }

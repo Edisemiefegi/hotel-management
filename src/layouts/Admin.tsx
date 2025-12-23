@@ -1,4 +1,4 @@
-import NavigationDrawer from "@/components/ui/base/NavigationDrawer";
+import NavigationDrawer from "@/components/base/NavigationDrawer";
 import { Outlet } from "react-router-dom";
 
 function Admin() {
@@ -6,7 +6,6 @@ function Admin() {
     <div >
       
         <NavigationDrawer>
-          drawingx
           <Outlet/>
         </NavigationDrawer>
    

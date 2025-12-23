@@ -48,12 +48,14 @@ function Button({
   }) {
   const Comp = asChild ? Slot : "button"
 
+  const baseClass = 'cursor-pointer'
+
   return (
     <Comp
       data-slot="button"
       data-variant={variant}
       data-size={size}
-      className={cn(buttonVariants({ variant, size, className }))}
+      className={cn(buttonVariants({ variant, size, className}), baseClass)}
       {...props}
     />
   )
