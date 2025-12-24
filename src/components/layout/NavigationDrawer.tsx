@@ -10,40 +10,38 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { useState, type ReactNode } from "react";
 import { Button } from "../ui/button";
-import { Link, useLocation} from "react-router-dom";
-import { BellDot } from "lucide-react";
-
+import { Link, useLocation } from "react-router-dom";
+import { Bell } from "lucide-react";
+import { ROUTES } from "@/route";
+import { cn } from "@/lib/utils";
 
 const tabs = [
-  { icon: LayoutDashboard, label: "Dashboard", path: "/admin/dashboard" },
-  { icon: Building2, label: "Hotels", path: "/admin/hotels" },
-  { icon: BedDouble, label: "Rooms", path: "/admin/rooms" },
-  { icon: CalendarCheck, label: "Bookings", path: "/admin/bookings" },
-  { icon: Users, label: "Clients", path: "/admin/clients" },
-  { icon: Settings, label: "Settings", path: "/admin/settings" },
+  { icon: LayoutDashboard, label: "Dashboard", path: ROUTES.Dashboard },
+  { icon: Building2, label: "Hotels", path: ROUTES.Hotels },
+  { icon: BedDouble, label: "Rooms", path: ROUTES.Rooms },
+  { icon: CalendarCheck, label: "Bookings", path: ROUTES.Bookings },
+  { icon: Users, label: "Clients", path: ROUTES.Clients },
+  { icon: Settings, label: "Settings", path: ROUTES.Settings },
 ];
 
 interface Props {
-  children: ReactNode;
+  rail?: Boolean;
+  setRail?: any;
 }
 
-function NavigationDrawer({ children }: Props) {
-  const [rail, setRail] = useState(false);
-
+function NavigationDrawer({ rail, setRail }: Props) {
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
 
   const sidebarWidth = rail ? "md:w-18" : "md:w-60";
-  const contentOffset = rail ? "md:ml-18" : "md:ml-60";
 
   const itemClasses =
     "flex md:flex-row flex-col items-center md:gap-4 font-light text-sm p-2 rounded-md  cursor-pointer";
 
   return (
-    <main className="relative max-h-screen">
+    <nav className="">
       {/* Mobile top bar */}
       <header className="fixed  bg-white top-0 z-50 flex w-full items-center justify-between border px-3 py-4 md:hidden">
         <span className="flex items-center gap-1.5">
@@ -53,12 +51,15 @@ function NavigationDrawer({ children }: Props) {
 
         <div className="flex gap-4">
           <Moon size={18} strokeWidth={1.5} />
-          <BellDot size={18} strokeWidth={1.5} />
+          <Bell fill="black" size={18} strokeWidth={1.5} />
         </div>
       </header>
       {/* Sidebar */}
       <aside
-        className={`fixed z-40 bottom-0 bg-white flex h-18 w-full flex-row justify-between border border-neutral-100 md:top-0 md:h-full md:flex-col ${sidebarWidth}`}
+        className={cn(
+          sidebarWidth,
+          "fixed z-40 bottom-0 bg-white flex h-18 w-full flex-row justify-between border border-neutral-100 md:top-0 md:h-full md:flex-col"
+        )}
       >
         {/* Top section */}
         <div>
@@ -82,7 +83,8 @@ function NavigationDrawer({ children }: Props) {
           {/* Navigation items */}
           <div className="flex group w-screen md:w-full justify-between p-3 md:flex-col md:gap-3">
             {tabs.map(({ icon: Icon, label, path }) => (
-              <Link to={path}
+              <Link
+                to={path}
                 key={label}
                 className={`${itemClasses} ${
                   isActive(path)
@@ -108,9 +110,8 @@ function NavigationDrawer({ children }: Props) {
 
             <div className={itemClasses}>
               {!rail && <span>Notifications</span>}
-              <BellDot size={20} strokeWidth={1.5} />
+              <Bell size={20} strokeWidth={1.5} />
             </div>
-
 
             <div className={itemClasses}>
               {!rail && <span>Logout</span>}
@@ -119,12 +120,7 @@ function NavigationDrawer({ children }: Props) {
           </div>
         </div>
       </aside>
-
-      {/* main content */}
-      <section className={`pt-20 md:pt-6 px-6 transition-all ${contentOffset}`}>
-        {children}
-      </section>
-    </main>
+    </nav>
   );
 }
 
