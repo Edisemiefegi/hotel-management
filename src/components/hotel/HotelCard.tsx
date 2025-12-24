@@ -1,4 +1,4 @@
-import { Bed, BedDouble, MapPin, Sparkles, Star } from "lucide-react";
+import {  BedDouble, MapPin, Sparkles, Star } from "lucide-react";
 import Card from "../base/Card";
 
 interface Props {
