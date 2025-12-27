@@ -3,11 +3,21 @@ import HotelCard from "@/components/hotel/HotelCard";
 import SearchComponent from "@/components/base/SearchComponent";
 import Table from "@/components/base/Table";
 import { Button } from "@/components/ui/button";
-import { LayoutGrid, Plus, Rows3 } from "lucide-react";
-import {usePersistentState} from "@/hooks/usePersistentState"
+import {
+  Dot,
+  Ellipsis,
+  LayoutGrid,
+  MapPin,
+  Plus,
+  Rows3,
+  Star,
+} from "lucide-react";
+import { usePersistentState } from "@/hooks/usePersistentState";
+import { cn } from "@/lib/utils";
+import { Progress } from "@/components/ui/progress";
 
 export default function Hotels() {
-  const [isGrid, setIsGrid] = usePersistentState("hotelsView", false)
+  const [isGrid, setIsGrid] = usePersistentState("hotelsView", false);
 
   const hotels = [
     {
@@ -21,6 +31,7 @@ export default function Hotels() {
       image: "/hotels/hotel1.webp",
       amenities: ["Free WiFi", "Pool", "Gym", "Restaurant"],
       isFeatured: true,
+      status: "Operational",
     },
     {
       id: "htl_002",
@@ -33,6 +44,7 @@ export default function Hotels() {
       image: "/hotels/hotel2.webp",
       amenities: ["Breakfast", "Free Parking", "Sea View"],
       isFeatured: false,
+      status: "Closed",
     },
     {
       id: "htl_003",
@@ -45,6 +57,7 @@ export default function Hotels() {
       image: "/hotels/hotel2.webp",
       amenities: ["Spa", "Pool", "Bar", "Airport Shuttle"],
       isFeatured: true,
+      status: "Operational",
     },
     {
       id: "htl_004",
@@ -57,6 +70,7 @@ export default function Hotels() {
       image: "/hotels/hotel2.webp",
       amenities: ["Free WiFi", "Restaurant"],
       isFeatured: false,
+      status: "Operational",
     },
     {
       id: "htl_005",
@@ -69,6 +83,89 @@ export default function Hotels() {
       image: "/hotels/hotel1.webp",
       amenities: ["Gym", "Conference Hall", "Pool"],
       isFeatured: true,
+      status: "Renovation",
+    },
+  ];
+
+  const headers = [
+    {
+      title: "Hotel",
+      field: "hotel",
+      render: (row: any) => (
+        <div className="flex gap-3">
+          <img
+            src="/hotels/hotel1.webp"
+            alt=""
+            className="w-12 h-12 rounded-lg"
+          />
+          <p className="font-medium flex flex-col">
+            {row.name}{" "}
+            <span className="text-xs text-gray font-normal">{row.id}</span>
+          </p>
+        </div>
+      ),
+    },
+    {
+      title: "Location",
+      field: "location",
+      render: (row: any) => (
+        <div className="flex gap-1 items-center text-gray-700">
+          <MapPin size={15} />
+          <span> {row.location}</span>
+        </div>
+      ),
+    },
+
+    {
+      title: "Status",
+      field: "status",
+      render: (row: any) => (
+        <span
+          className={cn(
+            row.status == "Operational" &&
+              "bg-green-50 text-green-500 border-green-500",
+            row.status == "Renovation" &&
+              "bg-yellow-50 text-yellow-500 border-yellow-500",
+            row.status == "Closed" && "bg-red-50 text-red-600 border-red-500",
+            "py-1 px-1.5 w-fit rounded-full text-xs flex items-center  border"
+          )}
+        >
+          <Dot size={15} /> {row.status}
+        </span>
+      ),
+    },
+
+    {
+      title: "Rating",
+      field: "rating",
+      render: (row: any) => (
+        <div className="flex items-center gap-1">
+          <Star stroke="0" fill="#FBBF23" size={15} />
+          <p>
+            {" "}
+            {row.rating} <span className="text-gray text-sm">(12)</span>
+          </p>
+        </div>
+      ),
+    },
+    {
+      title: "Occupancy",
+      field: "occupancy",
+      render: () => (
+        <div className="space-y-1">
+          <Progress value={33} />
+          <span className="text-xs"> 33% full</span>
+        </div>
+      ),
+    },
+    {
+      title: "Action",
+      field: "action",
+      render: () => (
+        <Button variant={"ghost"} className=" ">
+          <Ellipsis />
+        </Button>
+      ),
     },
   ];
 
@@ -96,19 +193,22 @@ export default function Hotels() {
         </Button>
       </div>
 
-      {isGrid ? (
-        <section className="grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-4">
+      {!isGrid ? (
+        <section className="grid xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
           {hotels.map((hotel, index) => (
             <HotelCard key={index} hotel={hotel}></HotelCard>
           ))}
         </section>
       ) : (
         <section>
-          <Table></Table>
+          <Table
+            uniqueId="id"
+            headers={headers}
+            data={hotels}
+            emptySlot={<p className="p-4 text-center">No Hotel found</p>}
+          ></Table>
         </section>
       )}
     </main>
   );
 }
-
-

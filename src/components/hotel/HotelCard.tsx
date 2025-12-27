@@ -1,5 +1,7 @@
-import {  BedDouble, MapPin, Sparkles, Star } from "lucide-react";
+import {  Ellipsis, MapPin,  Star } from "lucide-react";
 import Card from "../base/Card";
+import { Button } from "../ui/button";
+import { Progress } from "../ui/progress";
 
 interface Props {
   hotel?: Record<any, any>;
@@ -7,7 +9,7 @@ interface Props {
 
 function HotelCard({ hotel }: Props) {
   return (
-    <Card className="flex h-70 w-full flex-col overflow-hidden gap-3">
+    <Card className="flex h-80 min-h-fit w-full flex-col overflow-hidden gap-3">
       <div className="h-2/5 w-full ">
         <img
           src={hotel?.image}
@@ -20,29 +22,30 @@ function HotelCard({ hotel }: Props) {
         <div className=" flex justify-between ">
           <div>
             <h2 className="text-lg font-medium">{hotel?.name}</h2>
-            <p className="flex text-gray text-xs items-center ">
-              <MapPin size={13} /> {hotel?.location}
-            </p>
+            <p className="text-gray text-xs  ">{hotel?.id}</p>
           </div>
-          <span className="text-sm font-medium flex">
-            <Star fill="yellow" stroke="0" />
-            <span>{hotel?.rating}</span>
-          </span>
+          <Button variant={"ghost"} className=" ">
+            <Ellipsis />
+          </Button>
         </div>
 
+        <div className="flex justify-between">
+          <p className="flex text-gray text-xs items-center ">
+            <MapPin fill="#1132D5" size={13} /> {hotel?.location}
+          </p>
+          <span className="text-sm items-center flex">
+            <Star fill="#FBBF23" width={15} stroke="0" />
+            <span className="font-medium">
+              {hotel?.rating}{" "}
+              <span className="text-xs text-gray "> (12 reviews)</span>
+            </span>
+          </span>
+        </div>
         <hr />
 
-           <div className=" flex justify-between ">
-          <div>
-            <h2 className=" font-semibold">N{hotel?.pricePerNight}</h2>
-            <p className="flex font-light text-gray text-xs items-center ">
-        per night
-            </p>
-          </div>
-          <span className="text-sm text-gray gap-2 flex">
-            <span className="flex gap-1"><BedDouble size={18}/> 3</span>
-           <span className="flex gap-1"> <Sparkles  size={18}/> 5</span>
-          </span>
+        <div className="space-y-1">
+          <Progress value={33} />
+          <span className="text-xs"> 33% full</span>
         </div>
       </section>
     </Card>
