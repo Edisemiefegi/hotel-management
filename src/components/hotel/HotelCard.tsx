@@ -1,4 +1,4 @@
-import {  Ellipsis, MapPin,  Star } from "lucide-react";
+import { Ellipsis, MapPin, Star } from "lucide-react";
 import Card from "../base/Card";
 import { Button } from "../ui/button";
 import { Progress } from "../ui/progress";
@@ -9,16 +9,16 @@ interface Props {
 
 function HotelCard({ hotel }: Props) {
   return (
-    <Card className="flex h-80 min-h-fit w-full flex-col overflow-hidden gap-3">
+    <Card className="flex h-80 min-h-fit w-full flex-col overflow-hidden group">
       <div className="h-2/5 w-full ">
         <img
           src={hotel?.image}
-          className="object-cover overflow-hidden w-full h-full"
+          className="object-cover overflow-hidden w-full h-full shrink-0 group-hover:scale-105 transition-all duration-300"
           alt=""
         />
       </div>
 
-      <section className="p-2 space-y-5">
+      <section className="p-4 space-y-5 ">
         <div className=" flex justify-between ">
           <div>
             <h2 className="text-lg font-medium">{hotel?.name}</h2>
@@ -31,7 +31,7 @@ function HotelCard({ hotel }: Props) {
 
         <div className="flex justify-between">
           <p className="flex text-gray text-xs items-center ">
-            <MapPin fill="#1132D5" size={13} /> {hotel?.location}
+            <MapPin stroke="#1132D5" size={13} /> {hotel?.location}
           </p>
           <span className="text-sm items-center flex">
             <Star fill="#FBBF23" width={15} stroke="0" />

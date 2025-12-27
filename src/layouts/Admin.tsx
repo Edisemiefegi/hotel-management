@@ -11,9 +11,11 @@ function Admin() {
     <main className="relative max-h-screen">
       <NavigationDrawer rail={rail} setRail={setRail} />
       {/* main content */}
-      <section className={`pt-20 md:pt-6 px-6 transition-all ${contentOffset}`}>
-        <Outlet />
-      </section>
+      <div className={`pt-20 md:pt-6 px-6 transition-all ${contentOffset}`}>
+        <div className=" md:container mx-auto">
+          <Outlet />
+        </div>
+      </div>
     </main>
   );
 }

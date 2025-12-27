@@ -27,7 +27,7 @@ const tabs = [
 
 interface Props {
   rail?: Boolean;
-  setRail?: any;
+  setRail?: (val: boolean) => void;
 }
 
 function NavigationDrawer({ rail, setRail }: Props) {
