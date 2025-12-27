@@ -204,7 +204,7 @@ export default function Hotels() {
           <Table
             uniqueId="id"
             headers={headers}
-            data={hotels}
+            data={[...hotels, ...hotels, ...hotels, ...hotels]} //For testing purposes, remove this later
             emptySlot={<p className="p-4 text-center">No Hotel found</p>}
           ></Table>
         </section>
