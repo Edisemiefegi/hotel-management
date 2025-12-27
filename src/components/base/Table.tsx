@@ -8,6 +8,7 @@ interface Props<T> {
   data: T[];
   emptyClass?: string;
   emptySlot?: ReactNode;
+  scrollHeight?: string;
 }
 
 function Table<T>({
@@ -16,6 +17,7 @@ function Table<T>({
   data,
   emptyClass,
   emptySlot,
+  scrollHeight = "max-h-[calc(100vh-200px)]",
   ...rest
 }: Props<T>) {
   function getField(path?: string, row?: any): any {
@@ -29,10 +31,13 @@ function Table<T>({
   return (
     <div
       {...rest}
-      className="overflow-x-auto w-full bg-white rounded-xl border border-gray-200 shadow-md  "
+      className={cn(
+        "overflow-x-auto overflow-y-auto  w-full bg-white rounded-xl border border-gray-200 shadow-md ",
+        scrollHeight
+      )}
     >
       <table className="table-auto min-w-max w-full  ">
-        <thead className="">
+        <thead className="sticky top-0 bg-white/70 backdrop-blur-md  shadow-xs z-10 ">
           <tr className="text-left text-gray border-b border-gray-300">
             {headers.map((col, index) => (
               <th
@@ -57,7 +62,7 @@ function Table<T>({
                 return (
                   <td
                     key={`${rowIndex}-${colIndex}-${col.field}`}
-                    className={`p-4 align-top ${col.className ?? ""}`}
+                    className={`p-4 align-center ${col.className ?? ""}`}
                   >
                     {col.render
                       ? col.render(row, rowIndex, value)

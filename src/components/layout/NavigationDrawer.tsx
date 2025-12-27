@@ -38,12 +38,12 @@ function NavigationDrawer({ rail, setRail }: Props) {
   const sidebarWidth = rail ? "md:w-18" : "md:w-60";
 
   const itemClasses =
-    "flex md:flex-row flex-col items-center md:gap-4 font-light text-sm p-2 rounded-md  cursor-pointer";
+    "flex md:flex-row flex-col gap-y-1 items-center md:gap-4 font-light text-sm p-2 rounded-md  cursor-pointer";
 
   return (
     <nav className="">
       {/* Mobile top bar */}
-      <header className="fixed  bg-white top-0 z-50 flex w-full items-center justify-between border px-3 py-4 md:hidden">
+      <header className="fixed  bg-white/70 backdrop-blur-md top-0 z-50 flex w-full items-center justify-between border px-3 py-4 md:hidden">
         <span className="flex items-center gap-1.5">
           <Building2 color="#7A462E" />
           <span className="font-serif">Luxuria</span>
@@ -73,7 +73,7 @@ function NavigationDrawer({ rail, setRail }: Props) {
                 </span>
               )}
 
-              <Button variant={"ghost"} onClick={() => setRail(!rail)}>
+              <Button variant={"ghost"} onClick={() => setRail?.(!rail)}>
                 {rail ? <ChevronRight /> : <ChevronLeft />}
               </Button>
             </div>
@@ -86,14 +86,18 @@ function NavigationDrawer({ rail, setRail }: Props) {
               <Link
                 to={path}
                 key={label}
-                className={`${itemClasses} ${
+                className={cn(
+                  itemClasses,
+                  "transition-all duration-200",
                   isActive(path)
-                    ? "md:bg-primary text-primary  md:text-white md:font-medium"
-                    : "md:hover:bg-secondary md:hover:font-medium"
-                }`}
+                    ? "md:bg-primary text-primary md:text-white font-medium"
+                    : "md:hover:bg-secondary "
+                )}
               >
                 <Icon size={20} strokeWidth={1.5} />
-                {!rail && <span>{label}</span>}
+                {!rail && (
+                  <span className="text-[0.7rem] md:text-base">{label}</span>
+                )}
               </Link>
             ))}
           </div>
@@ -103,17 +107,17 @@ function NavigationDrawer({ rail, setRail }: Props) {
         <div className="hidden md:block">
           <hr />
           <div className="p-3 space-y-1">
-            <div className={itemClasses}>
+            <div className={cn(itemClasses, "justify-between")}>
               {!rail && <span>Theme</span>}
               <Moon size={20} strokeWidth={1.5} />
             </div>
 
-            <div className={itemClasses}>
+            <div className={cn(itemClasses, "justify-between")}>
               {!rail && <span>Notifications</span>}
               <Bell size={20} strokeWidth={1.5} />
             </div>
 
-            <div className={itemClasses}>
+            <div className={cn(itemClasses, "justify-between")}>
               {!rail && <span>Logout</span>}
               <LogOut size={20} strokeWidth={1.5} />
             </div>
