@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { cn } from "@/lib/utils";
 import type { TableColum } from "@/types";
 import type { ReactNode } from "react";
@@ -20,12 +21,12 @@ function Table<T>({
   scrollHeight = "max-h-[calc(100vh-200px)]",
   ...rest
 }: Props<T>) {
-  function getField(path?: string, row?: any): any {
+  function getField(path?: string, row?: T): any {
     if (!path || !row) return "";
 
-    return path.split(".").reduce((acc: any, key) => {
-      return acc?.[key];
-    }, row);
+    return path.split(".").reduce((acc: unknown, key) => {
+      return (acc as Record<string, unknown>)?.[key];
+    }, row) as any;
   }
 
   return (
@@ -53,7 +54,9 @@ function Table<T>({
         <tbody className="">
           {data.map((row, rowIndex) => (
             <tr
-              key={`${rowIndex}-${(row as any)?.[uniqueId]}`}
+              key={`${rowIndex}-${
+                (row as Record<string, unknown>)?.[uniqueId as string]
+              }`}
               className="hover:bg-gray-50 transition border-b  border-gray-300"
             >
               {headers.map((col, colIndex) => {
