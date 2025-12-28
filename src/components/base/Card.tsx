@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
 
 interface Props {
@@ -5,7 +6,9 @@ interface Props {
   className?: string;
 }
 function Card({ children, className }: Props) {
-  return <div className={`${className} rounded-md shadow-md `}>{children}</div>;
+  return (
+    <div className={cn("rounded-md shadow-md", className)}>{children}</div>
+  );
 }
 
 export default Card;

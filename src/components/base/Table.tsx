@@ -38,7 +38,7 @@ function Table<T>({
       )}
     >
       <table className="table-auto min-w-max w-full  ">
-        <thead className="sticky top-0 bg-white/70 backdrop-blur-md  shadow-xs z-10 ">
+        <thead className="sticky top-0 bg-white shadow-xs z-10 ">
           <tr className="text-left text-gray border-b border-gray-300">
             {headers.map((col, index) => (
               <th

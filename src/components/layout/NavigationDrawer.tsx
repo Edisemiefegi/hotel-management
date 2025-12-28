@@ -43,7 +43,7 @@ function NavigationDrawer({ rail, setRail }: Props) {
   return (
     <nav className="">
       {/* Mobile top bar */}
-      <header className="fixed  bg-white/70 backdrop-blur-md top-0 z-50 flex w-full items-center justify-between border px-3 py-4 md:hidden">
+      <header className="fixed  bg-white top-0 z-50 flex w-full items-center justify-between border px-3 py-4 md:hidden">
         <span className="flex items-center gap-1.5">
           <Building2 color="#7A462E" />
           <span className="font-serif">Luxuria</span>
@@ -88,15 +88,15 @@ function NavigationDrawer({ rail, setRail }: Props) {
                 key={label}
                 className={cn(
                   itemClasses,
-                  "transition-all duration-200",
+                  "transition-all duration-200 ",
                   isActive(path)
-                    ? "md:bg-primary text-primary md:text-white font-medium"
+                    ? "md:bg-primary text-primary md:text-white "
                     : "md:hover:bg-secondary "
                 )}
               >
                 <Icon size={20} strokeWidth={1.5} />
                 {!rail && (
-                  <span className="text-[0.7rem] md:text-base">{label}</span>
+                  <span className="text-[0.7rem] md:text-sm">{label}</span>
                 )}
               </Link>
             ))}
