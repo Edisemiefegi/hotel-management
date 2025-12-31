@@ -1,13 +1,25 @@
-import { Ellipsis, MapPin, Star } from "lucide-react";
+import {  MapPin, Star } from "lucide-react";
 import Card from "../base/Card";
-import { Button } from "../ui/button";
 import { Progress } from "../ui/progress";
+import DropDown from "../base/DropDown";
 
 interface Props {
   hotel?: Record<any, any>;
 }
 
 function HotelCard({ hotel }: Props) {
+const menu = [
+  {
+    label: 'Edit',
+  },
+  {
+    label: 'View'
+  },
+  {
+    label: 'Delete'
+  }
+]
+
   return (
     <Card className="flex h-80 min-h-fit w-full flex-col overflow-hidden group">
       <div className="h-2/5 w-full ">
@@ -24,9 +36,8 @@ function HotelCard({ hotel }: Props) {
             <h2 className="text-lg font-medium">{hotel?.name}</h2>
             <p className="text-gray text-xs  ">{hotel?.id}</p>
           </div>
-          <Button variant={"ghost"} className=" ">
-            <Ellipsis />
-          </Button>
+        
+          <DropDown menu={menu}/>
         </div>
 
         <div className="flex justify-between">

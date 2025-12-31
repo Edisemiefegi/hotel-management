@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import type { TableColum } from "@/types";
 import type { ReactNode } from "react";
+import Pagination from "./Pagination";
 
 interface Props<T> {
   uniqueId: keyof T | string;
@@ -32,7 +33,7 @@ function Table<T>({
     <div
       {...rest}
       className={cn(
-        "overflow-x-auto overflow-y-auto  w-full bg-white rounded-xl border border-gray-200 shadow-md ",
+        "overflow-x-auto overflow-y-auto   w-full bg-white rounded-xl border border-gray-200 shadow-md ",
         scrollHeight
       )}
     >
@@ -84,6 +85,10 @@ function Table<T>({
           )}
         </div>
       )}
+
+    <div className="p-2">
+        <Pagination/>
+    </div>
     </div>
   );
 }

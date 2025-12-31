@@ -15,6 +15,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Bell } from "lucide-react";
 import { ROUTES } from "@/route";
 import { cn } from "@/lib/utils";
+import DropDown from "../base/DropDown";
 
 const tabs = [
   { icon: LayoutDashboard, label: "Dashboard", path: ROUTES.Dashboard },
@@ -23,6 +24,12 @@ const tabs = [
   { icon: CalendarCheck, label: "Bookings", path: ROUTES.Bookings },
   { icon: Users, label: "Clients", path: ROUTES.Clients },
   { icon: Settings, label: "Settings", path: ROUTES.Settings },
+];
+
+const bottomTabs = [
+  { icon: Moon, label: "Theme" },
+  { icon: Bell, label: "Notifications" },
+  { icon: LogOut, label: "Logout", path: ROUTES.Home },
 ];
 
 interface Props {
@@ -34,6 +41,13 @@ function NavigationDrawer({ rail, setRail }: Props) {
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
+
+  const MOBILE_VISIBLE_COUNT = 3;
+
+  const mobileTabs = tabs.slice(0, MOBILE_VISIBLE_COUNT);
+  const overflowTabs = tabs.slice(MOBILE_VISIBLE_COUNT);
+
+  console.log(mobileTabs, overflowTabs);
 
   const sidebarWidth = rail ? "md:w-18" : "md:w-60";
 
@@ -80,8 +94,8 @@ function NavigationDrawer({ rail, setRail }: Props) {
             <hr />
           </div>
 
-          {/* Navigation items */}
-          <div className="flex group w-screen md:w-full justify-between p-3 md:flex-col md:gap-3">
+          {/* Navigation items for desktop */}
+          <div className=" items-center group md:block hidden space-y-2  w-full justify-between p-3 flex-col gap-3">
             {tabs.map(({ icon: Icon, label, path }) => (
               <Link
                 to={path}
@@ -90,8 +104,8 @@ function NavigationDrawer({ rail, setRail }: Props) {
                   itemClasses,
                   "transition-all duration-200",
                   isActive(path)
-                    ? "md:bg-primary text-primary md:text-white font-medium"
-                    : "md:hover:bg-secondary "
+                    ? "bg-primary text-white font-medium"
+                    : "hover:bg-secondary "
                 )}
               >
                 <Icon size={20} strokeWidth={1.5} />
@@ -101,26 +115,51 @@ function NavigationDrawer({ rail, setRail }: Props) {
               </Link>
             ))}
           </div>
+
+          {/* Navigation items for mobile */}
+          <div className=" items-center group   w-screen flex justify-between p-3 md:hidden">
+            {mobileTabs.map(({ icon: Icon, label, path }) => (
+              <Link
+                to={path}
+                key={label}
+                className={cn(
+                  itemClasses,
+                  "transition-all duration-200",
+                  isActive(path)
+                    ? " text-primary font-medium"
+                    : "hover:text-primary"
+                )}
+              >
+                <Icon size={20} strokeWidth={1.5} />
+                {!rail && (
+                  <span className="text-[0.7rem] md:text-base">{label}</span>
+                )}
+              </Link>
+            ))}
+
+            {/* More  */}
+            {overflowTabs.length > 0 && (
+              <DropDown text="More" menu={overflowTabs} />
+            )}
+          </div>
         </div>
 
         {/* Bottom actions (desktop only) */}
         <div className="hidden md:block">
           <hr />
           <div className="p-3 space-y-1">
-            <div className={cn(itemClasses, "justify-between")}>
-              {!rail && <span>Theme</span>}
-              <Moon size={20} strokeWidth={1.5} />
-            </div>
-
-            <div className={cn(itemClasses, "justify-between")}>
-              {!rail && <span>Notifications</span>}
-              <Bell size={20} strokeWidth={1.5} />
-            </div>
-
-            <div className={cn(itemClasses, "justify-between")}>
-              {!rail && <span>Logout</span>}
-              <LogOut size={20} strokeWidth={1.5} />
-            </div>
+            {bottomTabs.map(({ label, icon: Icon }) => (
+              <div
+                key={label}
+                className={cn(
+                  itemClasses,
+                  "justify-between hover:text-primary"
+                )}
+              >
+                {!rail && <span>{label}</span>}
+                <Icon size={20} strokeWidth={1.5} />
+              </div>
+            ))}
           </div>
         </div>
       </aside>
