@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { LayoutGrid, Plus, Rows3 } from "lucide-react";
 import { usePersistentState } from "@/hooks/usePersistentState";
 import HotelTable from "@/components/hotel/HotelTable";
+import HeaderPortal from "@/components/portals/HeaderPortal";
 
 export default function Hotels() {
   const [isGrid, setIsGrid] = usePersistentState("hotelsView", false);
@@ -90,15 +91,17 @@ export default function Hotels() {
 
   return (
     <main className="space-y-6">
-      <Header
-        action={true}
-        heading="Hotels"
-        subheading="Manage your hotel propertie"
-      >
-        <Button>
-          <Plus /> Add Hotel
-        </Button>
-      </Header>
+      <HeaderPortal>
+        <Header
+          action
+          heading="Hotels"
+          subheading="Manage your hotel properties"
+        >
+          <Button>
+            <Plus /> Add Hotel
+          </Button>
+        </Header>
+      </HeaderPortal>
 
       <div className="flex justify-between ">
         <SearchComponent />

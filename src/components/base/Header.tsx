@@ -7,7 +7,6 @@ interface Props {
   action?: boolean;
   children?: ReactNode;
   className?: string;
-  sticky?: boolean;
 }
 function Header({
   heading,
@@ -15,13 +14,12 @@ function Header({
   action,
   children,
   className,
-  sticky = true,
+
 }: Props) {
   return (
     <header
       className={cn(
         "flex items-center justify-between bg-white py-4",
-        sticky && "sticky top-14 md:top-0 z-10",
         className
       )}
     >
