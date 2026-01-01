@@ -21,7 +21,7 @@ const menu = [
 ]
 
   return (
-    <Card className="flex h-80 min-h-fit w-full flex-col overflow-hidden group">
+    <Card className="shadow-none border hover:shadow-lg transition-all duration-300 flex h-80 min-h-fit w-full flex-col overflow-hidden group">
       <div className="h-2/5 w-full ">
         <img
           src={hotel?.image}

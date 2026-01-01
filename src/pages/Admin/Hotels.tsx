@@ -114,7 +114,7 @@ export default function Hotels() {
 
       {!isGrid ? (
         <section className="grid xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
-          {hotels.map((hotel, index) => (
+          {[...hotels, ...hotels, ...hotels, ...hotels].map((hotel, index) => (
             <HotelCard key={index} hotel={hotel}></HotelCard>
           ))}
         </section>

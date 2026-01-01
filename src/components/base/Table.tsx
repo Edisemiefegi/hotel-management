@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { cn } from "@/lib/utils";
 import type { TableColum } from "@/types";
 import { useState, type ReactNode } from "react";
@@ -23,12 +24,12 @@ function Table<T>({
 
   ...rest
 }: Props<T>) {
-  function getField(path?: string, row?: any): any {
+  function getField(path?: string, row?: T): any {
     if (!path || !row) return "";
 
-    return path.split(".").reduce((acc: any, key) => {
-      return acc?.[key];
-    }, row);
+    return path.split(".").reduce((acc: unknown, key) => {
+      return (acc as Record<string, unknown>)?.[key];
+    }, row) as any;
   }
 
   return (
@@ -40,7 +41,7 @@ function Table<T>({
       )}
     >
       <table className="table-auto min-w-max w-full  ">
-        <thead className="sticky top-0 bg-white  shadow-xs z-10 ">
+        <thead className="sticky top-0 bg-white shadow-xs z-10 ">
           <tr className="text-left text-gray border-b border-gray-300">
             {headers.map((col, index) => (
               <th
@@ -56,7 +57,9 @@ function Table<T>({
         <tbody className="">
           {data.map((row, rowIndex) => (
             <tr
-              key={`${rowIndex}-${(row as any)?.[uniqueId]}`}
+              key={`${rowIndex}-${
+                (row as Record<string, unknown>)?.[uniqueId as string]
+              }`}
               className="hover:bg-gray-50 transition border-b  border-gray-300"
             >
               {headers.map((col, colIndex) => {
