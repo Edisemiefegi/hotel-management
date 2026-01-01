@@ -5,13 +5,22 @@ import DropDown from "@/components/base/DropDown";
 import type { MenuItem } from "@/types";
 import { Dot, MapPin, Star } from "lucide-react";
 import { HOTELS } from "@/constants/hotels";
+import { useState } from "react";
+import Pagination from "../base/Pagination";
 
 interface Props {
   menu: MenuItem[];
 }
 
 function HotelTable({ menu }: Props) {
-  const hotels = HOTELS;
+  const hotels = [...HOTELS,  ...HOTELS, ...HOTELS];
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+
+  const paginatedHotels = hotels.slice(startIndex, endIndex);
 
   const headers = [
     {
@@ -92,12 +101,27 @@ function HotelTable({ menu }: Props) {
   ];
 
   return (
-    <Table
-      uniqueId="id"
-      headers={headers}
-      data={[...hotels]}
-      emptySlot={<p className="p-4 text-center">No Hotel found</p>}
-    ></Table>
+    <div className="bg-white rounded-xl border border-gray-200 shadow-md">
+      <Table
+        uniqueId="id"
+        headers={headers}
+        data={paginatedHotels}
+        emptySlot={<p className="p-4 text-center">No Hotel found</p>}
+      ></Table>
+      <div className="p-2">
+        <Pagination
+          totalItems={hotels.length}
+          currentPage={currentPage}
+          pageSize={pageSize}
+          setPageSize={setPageSize}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={(size) => {
+            setPageSize(size);
+            setCurrentPage(1);
+          }}
+        />
+      </div>
+    </div>
   );
 }
 

@@ -1,7 +1,8 @@
 import { cn } from "@/lib/utils";
 import type { TableColum } from "@/types";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import Pagination from "./Pagination";
+import { HOTELS } from "@/constants/hotels";
 
 interface Props<T> {
   uniqueId: keyof T | string;
@@ -19,6 +20,7 @@ function Table<T>({
   emptyClass,
   emptySlot,
   scrollHeight = "max-h-[calc(100vh-200px)]",
+
   ...rest
 }: Props<T>) {
   function getField(path?: string, row?: any): any {
@@ -33,12 +35,12 @@ function Table<T>({
     <div
       {...rest}
       className={cn(
-        "overflow-x-auto overflow-y-auto   w-full bg-white rounded-xl border border-gray-200 shadow-md ",
+        "overflow-x-auto overflow-y-auto  rounded-t-xl w-full  ",
         scrollHeight
       )}
     >
       <table className="table-auto min-w-max w-full  ">
-        <thead className="sticky top-0 bg-white/70 backdrop-blur-md  shadow-xs z-10 ">
+        <thead className="sticky top-0 bg-white  shadow-xs z-10 ">
           <tr className="text-left text-gray border-b border-gray-300">
             {headers.map((col, index) => (
               <th
@@ -86,9 +88,16 @@ function Table<T>({
         </div>
       )}
 
-    <div className="p-2">
-        <Pagination/>
-    </div>
+      {/* <div className="p-2">
+        <Pagination
+          totalItems={data.length}
+          currentPage={currentPage}
+          pageSize={pageSize}
+          setPageSize={setPageSize}
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
+        />
+      </div> */}
     </div>
   );
 }

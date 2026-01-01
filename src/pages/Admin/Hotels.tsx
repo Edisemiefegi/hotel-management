@@ -89,7 +89,7 @@ export default function Hotels() {
   ];
 
   return (
-    <main className="space-y-6 pb-30">
+    <main className="space-y-6">
       <Header
         action={true}
         heading="Hotels"
