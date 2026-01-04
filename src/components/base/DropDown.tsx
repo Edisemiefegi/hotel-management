@@ -7,7 +7,7 @@ import {
 import type { MenuItem } from "@/types";
 import { Ellipsis } from "lucide-react";
 import { Link } from "react-router-dom";
-
+import { Button } from "../ui/button";
 
 interface Props {
   menu: MenuItem[];
@@ -24,12 +24,26 @@ function DropDown({ menu, text }: Props) {
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        {menu.map(({ label, icon: Icon, path }) => (
+        {menu.map(({ label, icon: Icon, path, onClick }) => (
           <DropdownMenuItem key={label} asChild>
-            <Link to={path!} className="flex  items-center gap-2">
-              {Icon && <Icon size={16} strokeWidth={1.5} />}
-              <span>{label}</span>
-            </Link>
+            {path ? (
+              <Link
+                to={path!}
+                className="flex  items-center cursor-pointer  gap-2"
+              >
+                {Icon && <Icon size={16} strokeWidth={1.5} />}
+                <span>{label}</span>
+              </Link>
+            ) : (
+              <Button
+                onClick={onClick}
+                variant={"ghost"}
+                className="w-full justify-start"
+              >
+                {Icon && <Icon size={16} strokeWidth={1.5} />}
+                {label}
+              </Button>
+            )}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

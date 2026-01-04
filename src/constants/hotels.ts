@@ -1,4 +1,53 @@
-export const HOTELS = [
+import type { Hotel, Room } from "@/types";
+
+export const ROOMS: Room[]  = [
+  {
+    id: "rm_001",
+    name: "Park View Suite",
+    guests: 3,
+    bed: "1 King + Sofa",
+    size: "55 m²",
+    pricePerNight: 680000,
+    currency: "NGN",
+    status: "Available",
+    amenities: ["Park View", "Free WiFi", "Air Conditioning"],
+  },
+  {
+    id: "rm_002",
+    name: "Deluxe City Room",
+    guests: 2,
+    bed: "1 Queen",
+    size: "40 m²",
+    pricePerNight: 420000,
+    currency: "NGN",
+    status: "Available",
+    amenities: ["City View", "Workspace", "Smart TV"],
+  },
+  {
+    id: "rm_003",
+    name: "Executive Suite",
+    guests: 4,
+    bed: "1 King + Sofa",
+    size: "65 m²",
+    pricePerNight: 890000,
+    currency: "NGN",
+    status: "Booked",
+    amenities: ["Lounge Access", "Mini Bar", "Balcony"],
+  },
+  {
+    id: "rm_004",
+    name: "Standard Room",
+    guests: 2,
+    bed: "2 Twin Beds",
+    size: "30 m²",
+    pricePerNight: 250000,
+    currency: "NGN",
+    status: "Maintenance",
+    amenities: ["Free WiFi", "TV"],
+  },
+] as const;
+
+export const HOTELS: Hotel[] = [
   {
     id: "htl_001",
     name: "Azure Bay Hotel",
@@ -11,6 +60,10 @@ export const HOTELS = [
     amenities: ["Free WiFi", "Pool", "Gym", "Restaurant"],
     isFeatured: true,
     status: "Operational",
+    phoneNumber: 9053727890,
+    rooms: ROOMS,
+    description:
+      "Experience Venetian elegance in our restored 15th-century palazzo overlooking the Grand Canal. Features original frescoes, Murano glass chandeliers, and private water taxi service.",
   },
   {
     id: "htl_002",
@@ -24,6 +77,11 @@ export const HOTELS = [
     amenities: ["Breakfast", "Free Parking", "Sea View"],
     isFeatured: false,
     status: "Closed",
+    phoneNumber: 9053727890,
+    rooms: ROOMS,
+
+    description:
+      "Experience Venetian elegance in our restored 15th-century palazzo overlooking the Grand Canal. Features original frescoes, Murano glass chandeliers, and private water taxi service.",
   },
   {
     id: "htl_003",
@@ -37,6 +95,11 @@ export const HOTELS = [
     amenities: ["Spa", "Pool", "Bar", "Airport Shuttle"],
     isFeatured: true,
     status: "Operational",
+    phoneNumber: 9053727890,
+    rooms: ROOMS,
+
+    description:
+      "Experience Venetian elegance in our restored 15th-century palazzo overlooking the Grand Canal. Features original frescoes, Murano glass chandeliers, and private water taxi service.",
   },
   {
     id: "htl_004",
@@ -50,6 +113,11 @@ export const HOTELS = [
     amenities: ["Free WiFi", "Restaurant"],
     isFeatured: false,
     status: "Operational",
+    phoneNumber: 9053727890,
+    rooms: ROOMS,
+
+    description:
+      "Experience Venetian elegance in our restored 15th-century palazzo overlooking the Grand Canal. Features original frescoes, Murano glass chandeliers, and private water taxi service.",
   },
   {
     id: "htl_005",
@@ -63,6 +131,11 @@ export const HOTELS = [
     amenities: ["Gym", "Conference Hall", "Pool"],
     isFeatured: true,
     status: "Renovation",
+    phoneNumber: 9053727890,
+    rooms: ROOMS,
+
+    description:
+      "Experience Venetian elegance in our restored 15th-century palazzo overlooking the Grand Canal. Features original frescoes, Murano glass chandeliers, and private water taxi service.",
   },
   {
     id: "htl_006",
@@ -76,6 +149,11 @@ export const HOTELS = [
     amenities: ["Free Parking", "WiFi"],
     isFeatured: false,
     status: "Operational",
+    phoneNumber: 9053727890,
+    rooms: ROOMS,
+
+    description:
+      "Experience Venetian elegance in our restored 15th-century palazzo overlooking the Grand Canal. Features original frescoes, Murano glass chandeliers, and private water taxi service.",
   },
   {
     id: "htl_007",
@@ -89,6 +167,11 @@ export const HOTELS = [
     amenities: ["Spa", "Pool", "Fine Dining", "Gym"],
     isFeatured: true,
     status: "Operational",
+    phoneNumber: 9053727890,
+    rooms: ROOMS,
+
+    description:
+      "Experience Venetian elegance in our restored 15th-century palazzo overlooking the Grand Canal. Features original frescoes, Murano glass chandeliers, and private water taxi service.",
   },
   {
     id: "htl_008",
@@ -102,6 +185,11 @@ export const HOTELS = [
     amenities: ["Breakfast", "Free WiFi"],
     isFeatured: false,
     status: "Operational",
+    phoneNumber: 9053727890,
+    rooms: ROOMS,
+
+    description:
+      "Experience Venetian elegance in our restored 15th-century palazzo overlooking the Grand Canal. Features original frescoes, Murano glass chandeliers, and private water taxi service.",
   },
   {
     id: "htl_009",
@@ -115,6 +203,11 @@ export const HOTELS = [
     amenities: ["Sea View", "Restaurant", "Bar"],
     isFeatured: false,
     status: "Operational",
+    phoneNumber: 9053727890,
+    rooms: ROOMS,
+
+    description:
+      "Experience Venetian elegance in our restored 15th-century palazzo overlooking the Grand Canal. Features original frescoes, Murano glass chandeliers, and private water taxi service.",
   },
   {
     id: "htl_010",
@@ -128,5 +221,9 @@ export const HOTELS = [
     amenities: ["Pool", "Gym", "Free Parking"],
     isFeatured: false,
     status: "Renovation",
+    phoneNumber: 9053727890,
+    rooms: ROOMS,
+    description:
+      "Experience Venetian elegance in our restored 15th-century palazzo overlooking the Grand Canal. Features original frescoes, Murano glass chandeliers, and private water taxi service.",
   },
 ] as const;

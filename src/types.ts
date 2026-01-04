@@ -10,10 +10,44 @@ export type TableColum<T> = {
   render?: (row: T, index: number, value: any) => ReactNode;
 };
 
-
- export  type MenuItem = {
+export type MenuItem = {
   label: string;
   path?: string;
   icon?: LucideIcon;
-  className?: string
+  className?: string;
+  onClick?: () => void;
+};
+
+export type SidePanelHeader = {
+  heading?: string;
+  subHeading?: string;
+};
+
+export type Hotel = {
+  id: string;
+  name: string;
+  location: string;
+  rating: number;
+  reviews: number;
+  pricePerNight: number;
+  currency: "NGN" | "USD" | string;
+  image: string;
+  amenities: string[];
+  isFeatured: boolean;
+  status: "Operational" | "Closed" | "Renovation";
+  phoneNumber: number;
+  rooms: Room[];
+  description: string;
+};
+
+export type Room = {
+  id: string;
+  name: string;
+  amenities: string[];
+  guests: number;
+  bed: string;
+  size: string;
+  pricePerNight: number;
+  currency: string;
+  status: string;
 };

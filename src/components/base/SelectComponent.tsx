@@ -16,12 +16,16 @@ interface Props {
   options: Options[];
   value?: string;
   onChange?: (value: string) => void;
+  label?: string
 }
 
-function SelectComponent({ placeholder, options, value, onChange }: Props) {
+function SelectComponent({ placeholder, options, value, onChange, label }: Props) {
   return (
    
-      <Select value={value} onValueChange={onChange}>
+    <div>
+         {label &&      <label htmlFor="" className="mb-1 text-sm " >{label}</label>}
+
+        <Select value={value} onValueChange={onChange} >
         <SelectTrigger className="w-fit">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
@@ -33,6 +37,7 @@ function SelectComponent({ placeholder, options, value, onChange }: Props) {
           ))}
         </SelectContent>
       </Select>
+    </div>
    
   );
 }

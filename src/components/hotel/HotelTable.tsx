@@ -9,7 +9,7 @@ import { useState } from "react";
 import Pagination from "../base/Pagination";
 
 interface Props {
-  menu: MenuItem[];
+  menu: (hotel: any) => MenuItem[];
 }
 
 function HotelTable({ menu }: Props) {
@@ -96,7 +96,7 @@ function HotelTable({ menu }: Props) {
     {
       title: "Action",
       field: "action",
-      render: () => <DropDown menu={menu} />,
+      render: (row: any) => <DropDown menu={menu(row)} />,
     },
   ];
 

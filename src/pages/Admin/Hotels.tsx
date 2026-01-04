@@ -6,86 +6,41 @@ import { LayoutGrid, Plus, Rows3 } from "lucide-react";
 import { usePersistentState } from "@/hooks/usePersistentState";
 import HotelTable from "@/components/hotel/HotelTable";
 import HeaderPortal from "@/components/portals/HeaderPortal";
+import { HOTELS } from "@/constants/hotels";
+import { useState } from "react";
+import SidePanel from "@/components/layout/SidePanel";
+import EditHotel from "@/components/hotel/EditHotel";
+import ViewHotel from "@/components/hotel/ViewHotel";
+import type { Hotel } from "@/types";
 
 export default function Hotels() {
   const [isGrid, setIsGrid] = usePersistentState("hotelsView", false);
-  const menu = [
+  const [isOpen, setIsOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState("");
+  const [selectedHotel, setSelectedHotel] = useState<Hotel | null>(null);
+
+  const menu = (hotel: any) => [
     {
       label: "Edit",
+      onClick: () => {
+        setSelectedHotel(hotel);
+        setIsEdit("edit");
+        setIsOpen(true);
+      },
     },
     {
       label: "View",
+      onClick: () => {
+        setSelectedHotel(hotel);
+        setIsEdit("view");
+        setIsOpen(true);
+      },
     },
     {
       label: "Delete",
-    },
-  ];
-
-  const hotels = [
-    {
-      id: "htl_001",
-      name: "Azure Bay Hotel",
-      location: "Victoria Island, Lagos",
-      rating: 4.6,
-      reviews: 124,
-      pricePerNight: 45000,
-      currency: "NGN",
-      image: "/hotels/hotel1.webp",
-      amenities: ["Free WiFi", "Pool", "Gym", "Restaurant"],
-      isFeatured: true,
-      status: "Operational",
-    },
-    {
-      id: "htl_002",
-      name: "Palm View Resort",
-      location: "Lekki, Lagos",
-      rating: 4.3,
-      reviews: 98,
-      pricePerNight: 38000,
-      currency: "NGN",
-      image: "/hotels/hotel2.webp",
-      amenities: ["Breakfast", "Free Parking", "Sea View"],
-      isFeatured: false,
-      status: "Closed",
-    },
-    {
-      id: "htl_003",
-      name: "The Grand Orchid",
-      location: "GRA, Port Harcourt",
-      rating: 4.8,
-      reviews: 210,
-      pricePerNight: 60000,
-      currency: "NGN",
-      image: "/hotels/hotel2.webp",
-      amenities: ["Spa", "Pool", "Bar", "Airport Shuttle"],
-      isFeatured: true,
-      status: "Operational",
-    },
-    {
-      id: "htl_004",
-      name: "Sunset Haven Suites",
-      location: "Ibadan, Oyo",
-      rating: 4.1,
-      reviews: 67,
-      pricePerNight: 25000,
-      currency: "NGN",
-      image: "/hotels/hotel2.webp",
-      amenities: ["Free WiFi", "Restaurant"],
-      isFeatured: false,
-      status: "Operational",
-    },
-    {
-      id: "htl_005",
-      name: "Emerald Crown Hotel",
-      location: "Abuja, FCT",
-      rating: 4.7,
-      reviews: 156,
-      pricePerNight: 52000,
-      currency: "NGN",
-      image: "/hotels/hotel1.webp",
-      amenities: ["Gym", "Conference Hall", "Pool"],
-      isFeatured: true,
-      status: "Renovation",
+      onClick: () => {
+        console.log("delete");
+      },
     },
   ];
 
@@ -117,12 +72,33 @@ export default function Hotels() {
 
       {!isGrid ? (
         <section className="grid xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
-          {[...hotels, ...hotels, ...hotels, ...hotels].map((hotel, index) => (
+          {[...HOTELS, ...HOTELS].map((hotel, index) => (
             <HotelCard key={index} hotel={hotel}></HotelCard>
           ))}
         </section>
       ) : (
         <HotelTable menu={menu} />
+      )}
+      {isOpen && (
+        <>
+          <div
+            className="fixed inset-0 backdrop-blur-xs h-full bg-black/10 z-20"
+            onClick={() => setIsOpen(false)}
+          />
+          <SidePanel
+            close={setIsOpen}
+            title={isEdit === "edit" ? "Edit Hotel" : " Hotel Details"}
+            description={isEdit === "edit" ? selectedHotel?.name : " "}
+          >
+            <SidePanel.Content>
+              {isEdit == "edit" ? (
+                <EditHotel />
+              ) : (
+                <ViewHotel hotel={selectedHotel} />
+              )}
+            </SidePanel.Content>
+          </SidePanel>
+        </>
       )}
     </main>
   );
