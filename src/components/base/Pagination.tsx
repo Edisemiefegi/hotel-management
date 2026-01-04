@@ -1,7 +1,7 @@
 import { Button } from "../ui/button";
 import { ArrowLeft, ArrowRight, Dot } from "lucide-react";
 import SelectComponent from "./SelectComponent";
-import { useCallback, useMemo } from "react";
+import {  useMemo } from "react";
 
 interface Props {
   totalItems: number;

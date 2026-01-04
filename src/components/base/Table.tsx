@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { cn } from "@/lib/utils";
 import type { TableColum } from "@/types";
-import { useState, type ReactNode } from "react";
-import Pagination from "./Pagination";
-import { HOTELS } from "@/constants/hotels";
+import { type ReactNode } from "react";
+
 
 interface Props<T> {
   uniqueId: keyof T | string;
