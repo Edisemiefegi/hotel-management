@@ -2,23 +2,15 @@ import {  MapPin, Star } from "lucide-react";
 import Card from "../base/Card";
 import { Progress } from "../ui/progress";
 import DropDown from "../base/DropDown";
+import type { Hotel, MenuItem } from "@/types";
 
 interface Props {
-  hotel?: Record<any, any>;
+  hotel?: Hotel;
+  menu: MenuItem[];
 }
 
-function HotelCard({ hotel }: Props) {
-const menu = [
-  {
-    label: 'Edit',
-  },
-  {
-    label: 'View'
-  },
-  {
-    label: 'Delete'
-  }
-]
+function HotelCard({ hotel, menu}: Props) {
+
 
   return (
     <Card className="shadow-none !p-0 border hover:shadow-lg transition-all duration-300 flex h-80 min-h-fit w-full flex-col overflow-hidden group">

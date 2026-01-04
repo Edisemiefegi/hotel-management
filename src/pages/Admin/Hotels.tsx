@@ -11,7 +11,7 @@ import { useState } from "react";
 import SidePanel from "@/components/layout/SidePanel";
 import EditHotel from "@/components/hotel/EditHotel";
 import ViewHotel from "@/components/hotel/ViewHotel";
-import type { Hotel } from "@/types";
+import type { Hotel, MenuItem } from "@/types";
 
 export default function Hotels() {
   const [isGrid, setIsGrid] = usePersistentState("hotelsView", false);
@@ -19,7 +19,7 @@ export default function Hotels() {
   const [isEdit, setIsEdit] = useState("");
   const [selectedHotel, setSelectedHotel] = useState<Hotel | null>(null);
 
-  const menu = (hotel: any) => [
+  const menu = (hotel: any): MenuItem[] => [
     {
       label: "Edit",
       onClick: () => {
@@ -73,7 +73,8 @@ export default function Hotels() {
       {!isGrid ? (
         <section className="grid xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
           {[...HOTELS, ...HOTELS].map((hotel, index) => (
-            <HotelCard key={index} hotel={hotel}></HotelCard>
+            
+            <HotelCard key={index} hotel={hotel}   menu={menu(hotel)} ></HotelCard>
           ))}
         </section>
       ) : (
