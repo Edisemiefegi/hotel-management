@@ -8,6 +8,7 @@ import Rooms from "./pages/Admin/Rooms";
 import Bookings from "./pages/Admin/Bookings";
 import Clients from "./pages/Admin/Clients";
 import Settings from "./pages/Admin/Settings";
+import Auth from "./pages/Auth";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/admin/settings" element={<Settings />} />
       </Route>
       <Route path="/about" element={<About />} />
+      <Route path="/authentication" element={<Auth/>}/>
     </Routes>
   );
 }

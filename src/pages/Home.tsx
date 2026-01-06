@@ -7,7 +7,7 @@ function Home() {
   return (
     <div  className="p-8">
    <Button>
-    <Link to={'/admin/dashboard'}>Admin</Link>
+    <Link to={'/authentication'}>Admin</Link>
    </Button>
     </div>
   )
