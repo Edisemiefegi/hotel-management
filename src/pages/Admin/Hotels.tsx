@@ -7,33 +7,37 @@ import { usePersistentState } from "@/hooks/usePersistentState";
 import HotelTable from "@/components/hotel/HotelTable";
 import HeaderPortal from "@/components/portals/HeaderPortal";
 import { HOTELS } from "@/constants/hotels";
-import { useState } from "react";
-import SidePanel from "@/components/layout/SidePanel";
-import EditHotel from "@/components/hotel/EditHotel";
-import ViewHotel from "@/components/hotel/ViewHotel";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import type { Hotel, MenuItem } from "@/types";
+import ManageHotel from "@/components/hotel/MangeHotel";
 
 export default function Hotels() {
-  const [isGrid, setIsGrid] = usePersistentState("hotelsView", false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [isEdit, setIsEdit] = useState("");
-  const [selectedHotel, setSelectedHotel] = useState<Hotel | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
-  const menu = (hotel: any): MenuItem[] => [
+  const [isGrid, setIsGrid] = usePersistentState("hotelsView", false);
+
+  const isOpen = !!searchParams.get("hotel_id");
+  const onClose = () => navigate(-1);
+
+  const menu = (hotel: Hotel): MenuItem[] => [
     {
       label: "Edit",
       onClick: () => {
-        setSelectedHotel(hotel);
-        setIsEdit("edit");
-        setIsOpen(true);
+        setSearchParams((prev) => {
+          prev.set("hotel_id", hotel?.id);
+          prev.set("edit", "true");
+          return prev;
+        });
       },
     },
     {
       label: "View",
       onClick: () => {
-        setSelectedHotel(hotel);
-        setIsEdit("view");
-        setIsOpen(true);
+        setSearchParams((prev) => {
+          prev.set("hotel_id", hotel?.id);
+          return prev;
+        });
       },
     },
     {
@@ -73,34 +77,13 @@ export default function Hotels() {
       {!isGrid ? (
         <section className="grid xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
           {[...HOTELS, ...HOTELS].map((hotel, index) => (
-            
-            <HotelCard key={index} hotel={hotel}   menu={menu(hotel)} ></HotelCard>
+            <HotelCard key={index} hotel={hotel} menu={menu(hotel)}></HotelCard>
           ))}
         </section>
       ) : (
         <HotelTable menu={menu} />
       )}
-      {isOpen && (
-        <>
-          <div
-            className="fixed inset-0 backdrop-blur-xs h-full bg-black/10 z-20"
-            onClick={() => setIsOpen(false)}
-          />
-          <SidePanel
-            close={setIsOpen}
-            title={isEdit === "edit" ? "Edit Hotel" : " Hotel Details"}
-            description={isEdit === "edit" ? selectedHotel?.name : " "}
-          >
-            <SidePanel.Content>
-              {isEdit == "edit" ? (
-                <EditHotel />
-              ) : (
-                <ViewHotel hotel={selectedHotel} />
-              )}
-            </SidePanel.Content>
-          </SidePanel>
-        </>
-      )}
+      <ManageHotel open={isOpen} onClose={onClose} />
     </main>
   );
 }

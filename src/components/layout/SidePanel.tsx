@@ -4,7 +4,7 @@ import { type ReactNode } from "react";
 import { Button } from "../ui/button";
 
 interface Props {
-  close: (val: boolean) => void;
+  close: () => void;
   title?: string;
   description?: string;
   children: ReactNode;
@@ -33,7 +33,7 @@ function SidePanel({ close, title, description, children, className }: Props) {
     >
       <Button
         variant={"ghost"}
-        onClick={() => close(false)}
+        onClick={close}
         className="absolute  top-4 right-4 z-40 text-gray hover:text-black"
       >
         <X size={20} />

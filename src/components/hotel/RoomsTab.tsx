@@ -1,6 +1,6 @@
 import InfoCard from "../base/InfoCard";
 import { ROOMS } from "@/constants/hotels";
-import InputComponet from "../base/InputComponet";
+import AddRoom from "../rooms/AddRoom";
 import { Button } from "../ui/button";
 import { Plus } from "lucide-react";
 
@@ -16,23 +16,14 @@ function RoomsTab() {
           text={item.bed + "." + item.size}
         />
       ))}
-
       <hr />
-
       <div className="space-y-3">
         <p>Add New Room</p>
-        <div className="grid lg:grid-cols-3 sm:grid-cols-2 gap-3 grid-cols-1">
-          <InputComponet label="Room Type" />
-          <InputComponet label="Price Per Night (NGN)" />
-
-          <InputComponet label="Capacity" />
-          <InputComponet label="Beds" />
-          <InputComponet label="Size" />
-        </div>
+        <AddRoom />
         <Button className="w-full">
           <Plus /> Add Room
         </Button>
-      </div>
+      </div>{" "}
     </div>
   );
 }

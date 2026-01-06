@@ -23,7 +23,7 @@ function DropDown({ menu, text }: Props) {
           {text && <span className="text-[0.7rem]">{text}</span>}
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent className="mr-2">
         {menu.map(({ label, icon: Icon, path, onClick }) => (
           <DropdownMenuItem key={label} asChild>
             {path ? (
