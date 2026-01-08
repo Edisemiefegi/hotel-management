@@ -1,4 +1,4 @@
-import { Client, Account, ID } from "appwrite";
+import { Client, Account, } from "appwrite";
 
 export const client = new Client();
 const url = (import.meta as any).env.VITE_APPWRITE_ENDPOINT;
