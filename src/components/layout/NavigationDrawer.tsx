@@ -16,6 +16,7 @@ import { Bell } from "lucide-react";
 import { ROUTES } from "@/route";
 import { cn } from "@/lib/utils";
 import DropDown from "../base/DropDown";
+import { useAuth } from "@/composable/useAuth";
 
 const tabs = [
   { icon: LayoutDashboard, label: "Dashboard", path: ROUTES.Dashboard },
@@ -26,12 +27,6 @@ const tabs = [
   { icon: Settings, label: "Settings", path: ROUTES.Settings },
 ];
 
-const bottomTabs = [
-  { icon: Moon, label: "Theme" },
-  { icon: Bell, label: "Notifications" },
-  { icon: LogOut, label: "Logout", path: ROUTES.Home },
-];
-
 interface Props {
   rail?: Boolean;
   setRail?: (val: boolean) => void;
@@ -39,6 +34,7 @@ interface Props {
 
 function NavigationDrawer({ rail, setRail }: Props) {
   const location = useLocation();
+  const { logout } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -47,7 +43,11 @@ function NavigationDrawer({ rail, setRail }: Props) {
   const mobileTabs = tabs.slice(0, MOBILE_VISIBLE_COUNT);
   const overflowTabs = tabs.slice(MOBILE_VISIBLE_COUNT);
 
-  console.log(mobileTabs, overflowTabs);
+  const bottomTabs = [
+    { icon: Moon, label: "Theme" },
+    { icon: Bell, label: "Notifications" },
+    { icon: LogOut, label: "Logout", onclick: async () => await logout() },
+  ];
 
   const sidebarWidth = rail ? "md:w-18" : "md:w-60";
 
@@ -148,7 +148,7 @@ function NavigationDrawer({ rail, setRail }: Props) {
         <div className="hidden md:block">
           <hr />
           <div className="p-3 space-y-1">
-            {bottomTabs.map(({ label, icon: Icon }) => (
+            {bottomTabs.map(({ label, icon: Icon, onclick }) => (
               <div
                 key={label}
                 className={cn(
@@ -156,8 +156,10 @@ function NavigationDrawer({ rail, setRail }: Props) {
                   "justify-between hover:text-primary"
                 )}
               >
-                {!rail && <span>{label}</span>}
-                <Icon size={20} strokeWidth={1.5} />
+                <button onClick={onclick} className="flex justify-between w-full cursor-pointer" >
+                  {!rail && <span>{label}</span>}
+                  <Icon size={20} strokeWidth={1.5} />
+                </button>
               </div>
             ))}
           </div>

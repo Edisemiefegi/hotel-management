@@ -1,22 +1,94 @@
-import { useState } from "react";
 import InputComponet from "@/components/base/InputComponet";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Building2 } from "lucide-react";
+import { ArrowRight, Building2, Eye } from "lucide-react";
+import { useAuthStore } from "@/store/authStore";
+import { useState } from "react";
+import { useAuth } from "@/composable/useAuth";
+import { useNavigate } from "react-router-dom";
 
 function Auth() {
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const { mode, setMode, user } = useAuthStore();
+  const { signup, signin } = useAuth();
   const isSignup = mode === "signup";
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const [form, setForm] = useState({
+    email: "",
+    fullname: "",
+    password: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const fields = [
+    {
+      label: "Email",
+      placeholder: "example@gmail.com",
+      name: "email",
+    },
+    {
+      label: "Full Name",
+      placeholder: "e.g John doe",
+      name: "fullname",
+      show: isSignup,
+    },
+    {
+      label: "Password",
+      placeholder: "........",
+      name: "password",
+      append: <Eye />,
+    },
+  ];
+
+  const handleSubmit = async () => {
+    if (!form.email || !form.password || (isSignup && !form.fullname)) {
+      setError("All fields are required");
+      return;
+    }
+    setError("")
+
+    try {
+      if (isSignup) {
+        await signup(form);
+        console.log(form);
+      } else {
+        await signin({
+          email: form.email,
+          password: form.password,
+        });
+        console.log(form);
+      }
+      console.log(user, "suer");
+
+      if (user) navigate("/admin/dashboard");
+
+      setForm({
+        email: "",
+        password: "",
+        fullname: "",
+      });
+    } catch (error) {
+      console.error("Auth failed:", error);
+    }
+  };
 
   return (
     <main className="grid relative md:grid-cols-2 h-screen">
-      {/* Left side image */}
       <div className="relative w-full h-full">
         <img
           src="/hotels/room.jpeg"
           alt="Hotel Room"
           className="w-full h-full object-cover"
         />
-        <div className="absolute bottom-0 p-8 text-white space-y-2 z-20">
+        <div className="absolute md:block hidden bottom-0 p-8 text-white space-y-2 z-20">
           <p className="flex items-center font-bold gap-2">
             <Building2 /> LuxStay Management
           </p>
@@ -40,15 +112,32 @@ function Auth() {
           </div>
 
           {/* Form */}
-          <form className="space-y-3 w-full">
-            {isSignup && <InputComponet className="!text-white md:!text-gray-700" label="Full Name" />}
-            <InputComponet className="!text-white md:!text-gray-700" label="Email" />
-            <InputComponet className="!text-white md:!text-gray-700" label="Password" />
+          <form className="space-y-4 w-full">
+            {fields.map((field) => {
+              if (field.show === false) return null;
+
+              return (
+                <InputComponet
+                  key={field.name}
+                  label={field.label}
+                  name={field.name}
+                  placeholder={field.placeholder}
+                  value={form[field.name as keyof typeof form]}
+                  onChange={handleChange}
+                  append={field.append}
+                  error={error}
+                  className=" md:placeholder:text-gray placeholder:text-white"
+                />
+              );
+            })}
           </form>
 
-          {/* Action button & toggle */}
+          {/* submit button */}
           <div className="space-y-2">
-            <Button className="w-full flex justify-center items-center gap-2">
+            <Button
+              onClick={handleSubmit}
+              className="w-full flex justify-center items-center gap-2"
+            >
               {isSignup ? "Sign Up" : "Sign In"} <ArrowRight />
             </Button>
             <p className="text-sm  text-end">
@@ -64,7 +153,8 @@ function Auth() {
             </p>
           </div>
 
-          {/* Separator */}
+
+          {/* need help */}
           <div className="flex items-center gap-3 ">
             <hr className="flex-1 border-gray-300" />
             <p className="text-xs">Need help?</p>
