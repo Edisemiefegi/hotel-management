@@ -51,6 +51,15 @@ export const useAuth = () => {
 
   const signin = async (form: Form) => {
     try {
+      try {
+        const acct = await account.get();
+        // If this succeeds, user is already logged in
+        console.log(acct, "acct");
+
+        return useAuthStore.getState().user;
+      } catch {
+      }
+
       await account.createEmailPasswordSession({
         email: form.email,
         password: form.password,

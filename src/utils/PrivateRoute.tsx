@@ -5,7 +5,7 @@ const PrivateRoutes = () => {
 const {user} = useAuthStore()
 console.log(user, 'users');
 
-return user.status === 'admin' ? <Outlet/> : <Navigate to="/"/>
+return user && user.status === 'admin' ? <Outlet/> : <Navigate to="/"/>
 }
 
 export default PrivateRoutes

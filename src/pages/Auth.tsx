@@ -3,14 +3,15 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Building2, Eye } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 import { useState } from "react";
-import { useAuth } from "@/composable/useAuth";
+import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
 function Auth() {
-  const { mode, setMode, user } = useAuthStore();
+  const { mode, setMode } = useAuthStore();
   const { signup, signin } = useAuth();
   const isSignup = mode === "signup";
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -53,23 +54,19 @@ function Auth() {
       setError("All fields are required");
       return;
     }
-    setError("");
 
     try {
+      setIsLoading(true);
       if (isSignup) {
         await signup(form);
-       
-          navigate("/");
-      
+        navigate("/");
       } else {
-        await signin({
+        const loggedInUser = await signin({
           email: form.email,
           password: form.password,
         });
-        console.log(form);
-        console.log(user, "suer");
 
-        if (user && (user.status === "admin")) {
+        if (loggedInUser.status === "admin") {
           navigate("/admin/dashboard");
         } else {
           navigate("/");
@@ -82,7 +79,11 @@ function Auth() {
         fullname: "",
       });
     } catch (error) {
+      alert("Auth failed");
+
       console.error("Auth failed:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -141,10 +142,17 @@ function Auth() {
           {/* submit button */}
           <div className="space-y-2">
             <Button
+              disabled={isLoading}
               onClick={handleSubmit}
               className="w-full flex justify-center items-center gap-2"
             >
-              {isSignup ? "Sign Up" : "Sign In"} <ArrowRight />
+              {isLoading ? (
+                "Please wait..."
+              ) : (
+                <span className="flex items-center gap-2">
+                  {isSignup ? "Sign Up" : "Sign In"} <ArrowRight />
+                </span>
+              )}
             </Button>
             <p className="text-sm  text-end">
               {isSignup

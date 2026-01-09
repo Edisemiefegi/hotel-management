@@ -16,7 +16,7 @@ import { Bell } from "lucide-react";
 import { ROUTES } from "@/route";
 import { cn } from "@/lib/utils";
 import DropDown from "../base/DropDown";
-import { useAuth } from "@/composable/useAuth";
+import { useAuth } from "@/hooks/useAuth";
 
 const tabs = [
   { icon: LayoutDashboard, label: "Dashboard", path: ROUTES.Dashboard },
@@ -139,7 +139,17 @@ function NavigationDrawer({ rail, setRail }: Props) {
 
             {/* More  */}
             {overflowTabs.length > 0 && (
-              <DropDown text="More" menu={overflowTabs} />
+              <DropDown
+                text="More"
+                menu={[
+                  ...overflowTabs,
+                  {
+                    icon: LogOut,
+                    label: "Logout",
+                    onClick: async () => await logout(),
+                  },
+                ]}
+              />
             )}
           </div>
         </div>
@@ -156,7 +166,10 @@ function NavigationDrawer({ rail, setRail }: Props) {
                   "justify-between hover:text-primary"
                 )}
               >
-                <button onClick={onclick} className="flex justify-between w-full cursor-pointer" >
+                <button
+                  onClick={onclick}
+                  className="flex justify-between w-full cursor-pointer"
+                >
                   {!rail && <span>{label}</span>}
                   <Icon size={20} strokeWidth={1.5} />
                 </button>
