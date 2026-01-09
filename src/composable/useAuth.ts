@@ -1,5 +1,9 @@
-import { account, ID } from "@/appwriteConfig";
+import { account, ID, tableDB } from "@/appwriteConfig";
 import { useAuthStore } from "@/store/authStore";
+import { Query } from "appwrite";
+
+const db_Id = "admin-id";
+const users_Id = "users";
 
 export type Form = {
   email: string;
@@ -24,9 +28,21 @@ export const useAuth = () => {
         password: form.password,
       });
 
-      const sessionUser = await account.get(); 
-      setUser(sessionUser);
-      return sessionUser;
+      const data = {
+        username: form.fullname,
+        email: form.email,
+        status: "user",
+      };
+      const sessionUser = await account.get();
+
+      const user = await tableDB.createRow({
+        databaseId: db_Id,
+        tableId: users_Id,
+        rowId: sessionUser.$id,
+        data: data,
+      });
+      setUser(user);
+      return user;
     } catch (error) {
       console.error("Signup error:", error);
       throw error;
@@ -41,8 +57,20 @@ export const useAuth = () => {
       });
 
       const sessionUser = await account.get();
-      setUser(sessionUser);
-      return sessionUser;
+      const user = await tableDB.listRows({
+        databaseId: db_Id,
+        tableId: users_Id,
+        queries: [Query.equal("$id", sessionUser.$id)],
+      });
+
+      console.log(user, "user ");
+
+      if (!user.rows.length) {
+        throw new Error("User profile not found in database");
+      }
+
+      setUser(user.rows[0]);
+      return user.rows[0];
     } catch (error) {
       console.error("Signin error:", error);
       throw error;

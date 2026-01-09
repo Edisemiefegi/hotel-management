@@ -53,22 +53,28 @@ function Auth() {
       setError("All fields are required");
       return;
     }
-    setError("")
+    setError("");
 
     try {
       if (isSignup) {
         await signup(form);
-        console.log(form);
+       
+          navigate("/");
+      
       } else {
         await signin({
           email: form.email,
           password: form.password,
         });
         console.log(form);
-      }
-      console.log(user, "suer");
+        console.log(user, "suer");
 
-      if (user) navigate("/admin/dashboard");
+        if (user && (user.status === "admin")) {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/");
+        }
+      }
 
       setForm({
         email: "",
@@ -152,7 +158,6 @@ function Auth() {
               </span>
             </p>
           </div>
-
 
           {/* need help */}
           <div className="flex items-center gap-3 ">
