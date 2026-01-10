@@ -10,11 +10,14 @@ import { HOTELS } from "@/constants/hotels";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import type { Hotel, MenuItem } from "@/types";
 import ManageHotel from "@/components/hotel/MangeHotel";
+import Modal from "@/components/base/Modal";
+import AddHotel from "@/components/hotel/AddHotel";
+import EditHotel from "@/components/hotel/EditHotel";
 
 export default function Hotels() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
-
+  const [modal, setModal] = usePersistentState("modal", false);
   const [isGrid, setIsGrid] = usePersistentState("hotelsView", false);
 
   const isOpen = !!searchParams.get("hotel_id");
@@ -56,11 +59,12 @@ export default function Hotels() {
           heading="Hotels"
           subheading="Manage your hotel properties"
         >
-          <Button>
+          <Button onClick={() => setModal(true)}>
             <Plus /> Add Hotel
           </Button>
         </Header>
       </HeaderPortal>
+      {modal && <Modal onClose={() => setModal(false)}><EditHotel/></Modal>}
 
       <div className="flex justify-between ">
         <SearchComponent />

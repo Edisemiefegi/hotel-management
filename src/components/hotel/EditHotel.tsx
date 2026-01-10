@@ -24,8 +24,10 @@ function EditHotel() {
   ];
 
   return (
-    <div className="w-full  space-y-4">
-      <Tab tabs={tabs} />
+    <div className="w-full relative  space-y-4">
+ 
+        <Tab tabs={tabs} />
+
 
       <div className="justify-end flex space-x-3">
         <Button variant={"outline"}>Cancel</Button>
