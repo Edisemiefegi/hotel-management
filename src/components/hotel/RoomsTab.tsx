@@ -1,13 +1,20 @@
 import InfoCard from "../base/InfoCard";
-import { ROOMS } from "@/constants/hotels";
 import AddRoom from "../rooms/AddRoom";
-import { Button } from "../ui/button";
-import { Plus } from "lucide-react";
+import type { Room } from "@/types";
 
-function RoomsTab() {
+interface Props {
+  rooms: Room[];
+  updateRooms: (rooms: Room[]) => void;
+}
+
+function RoomsTab({ rooms, updateRooms }: Props) {
+  const addRoom = (room: Room) => {
+    updateRooms([...rooms, room]);
+  };
+
   return (
     <div className="space-y-4">
-      {ROOMS.map((item: any, index: number) => (
+      {rooms.map((item: any, index: number) => (
         <InfoCard
           key={index}
           status={item.status}
@@ -19,10 +26,7 @@ function RoomsTab() {
       <hr />
       <div className="space-y-3">
         <p>Add New Room</p>
-        <AddRoom />
-        <Button className="w-full">
-          <Plus /> Add Room
-        </Button>
+        <AddRoom onAdd={addRoom} />
       </div>{" "}
     </div>
   );

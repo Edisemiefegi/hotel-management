@@ -12,7 +12,6 @@ import type { Hotel, MenuItem } from "@/types";
 import ManageHotel from "@/components/hotel/MangeHotel";
 import Modal from "@/components/base/Modal";
 import AddHotel from "@/components/hotel/AddHotel";
-import EditHotel from "@/components/hotel/EditHotel";
 
 export default function Hotels() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -64,7 +63,11 @@ export default function Hotels() {
           </Button>
         </Header>
       </HeaderPortal>
-      {modal && <Modal onClose={() => setModal(false)}><EditHotel/></Modal>}
+      {modal && (
+        <Modal onClose={() => setModal(false)}>
+          <AddHotel onClose={() => setModal(false)} />
+        </Modal>
+      )}
 
       <div className="flex justify-between ">
         <SearchComponent />

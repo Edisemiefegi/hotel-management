@@ -51,3 +51,14 @@ export type Room = {
   currency: string;
   status: string;
 };
+
+export type HotelFormData = {
+  name: string;
+  location: string;
+  whatsapp: string;
+  description: string;
+  amenities: string;
+  rooms: Room[];
+  addons: any[];
+  images: any[]
+}
