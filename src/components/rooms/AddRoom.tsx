@@ -3,9 +3,9 @@ import InputComponet from "../base/InputComponet";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { Plus } from "lucide-react";
-interface Props {
-  onAdd?: (room: Room) => void;
-}
+// interface Props {
+//   onAdd?: (room: Room) => void;
+// }
 
 const emptyForm: Room = {
   id: "",
@@ -19,7 +19,7 @@ const emptyForm: Room = {
   amenities: [],
 };
 
-function AddRoom({ onAdd }: Props) {
+function AddRoom() {
   const [form, setForm] = useState<Room>(emptyForm);
 
   const updateField = (key: keyof Room, value: any) => {
@@ -64,7 +64,6 @@ function AddRoom({ onAdd }: Props) {
       <Button
         className="w-full mt-3"
         onClick={() => {
-          onAdd(form);
           setForm(emptyForm);
         }}
       >

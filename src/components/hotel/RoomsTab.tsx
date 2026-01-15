@@ -4,13 +4,13 @@ import type { Room } from "@/types";
 
 interface Props {
   rooms: Room[];
-  updateRooms: (rooms: Room[]) => void;
+  // updateRooms: (rooms: Room[]) => void;
 }
 
-function RoomsTab({ rooms, updateRooms }: Props) {
-  const addRoom = (room: Room) => {
-    updateRooms([...rooms, room]);
-  };
+function RoomsTab({ rooms }: Props) {
+  // const addRoom = (room: Room) => {
+  //   updateRooms([...rooms, room]);
+  // };
 
   return (
     <div className="space-y-4">
@@ -26,7 +26,7 @@ function RoomsTab({ rooms, updateRooms }: Props) {
       <hr />
       <div className="space-y-3">
         <p>Add New Room</p>
-        <AddRoom onAdd={addRoom} />
+        <AddRoom  />
       </div>{" "}
     </div>
   );
