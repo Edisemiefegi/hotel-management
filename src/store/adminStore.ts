@@ -8,7 +8,7 @@ type admin = {
 
 export const useAdminStore = create<admin>()(
   persist(
-    (set) => ({
+    (_set) => ({
       hotels: [],
     }),
     { name: "admin" }

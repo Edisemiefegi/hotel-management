@@ -10,7 +10,6 @@ export const useAdmin = () => {
     const uploadedIds: string[] = [];
     if (images.length > 0) {
       for (const file of images) {
-
         if (file instanceof File) {
           const fileId = ID.unique();
           const upload = await storage.createFile({
@@ -28,7 +27,7 @@ export const useAdmin = () => {
   const addHotel = async (form: HotelFormData) => {
     const uploadedFileIds = await uplaodImage(form?.images, bucket_Id);
     const hotelData = { ...form, images: uploadedFileIds };
-    const promise = tableDB.createRow({
+    tableDB.createRow({
       databaseId: db_Id,
       tableId: hotel_Id,
       rowId: ID.unique(),

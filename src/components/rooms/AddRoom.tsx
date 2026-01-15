@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { Plus } from "lucide-react";
 interface Props {
-  onAdd: (room: Room) => void;
+  onAdd?: (room: Room) => void;
 }
 
 const emptyForm: Room = {

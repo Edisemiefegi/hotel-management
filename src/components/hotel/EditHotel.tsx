@@ -32,6 +32,7 @@ function EditHotel() {
         amenities: ["City View", "Workspace", "Smart TV"],
       },
     ],
+    images: [],
     addons: [],
   };
 
