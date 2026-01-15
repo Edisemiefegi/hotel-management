@@ -45,7 +45,7 @@ function HotelForm({ data, isEdit = false, onChange }: Props) {
       content: (
         <RoomsTab
           rooms={form.rooms}
-          updateRooms={(rooms) => updateField("rooms", rooms)}
+          // updateRooms={(rooms) => updateField("rooms", rooms)}
         />
       ),
     },
