@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Tab from "../base/Tab";
 import RoomsTab from "./RoomsTab";
 import AddonTab from "./AddonTab";
 import DetailTab from "./DetailTab";
 import type { HotelFormData } from "@/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Props {
   data?: HotelFormData;
@@ -22,17 +23,21 @@ const emptyForm: HotelFormData = {
 };
 
 function HotelForm({ data, isEdit = false, onChange }: Props) {
-  const [form, setForm] = useState<HotelFormData>(
-    isEdit && data ? data : emptyForm
-  );
+  const [form, setForm] = useState<HotelFormData>(emptyForm);
+
+
+  useEffect(() => {
+    console.log("data", data)
+  }, [isEdit, data])
 
   const updateField = (key: keyof HotelFormData, value: any) => {
     setForm((prev) => {
       const updated = { ...prev, [key]: value };
-      onChange?.(updated); 
+      onChange?.(updated);
       return updated;
     });
   };
+
   const tabs = [
     {
       value: "details",
@@ -45,7 +50,7 @@ function HotelForm({ data, isEdit = false, onChange }: Props) {
       content: (
         <RoomsTab
           rooms={form.rooms}
-          // updateRooms={(rooms) => updateField("rooms", rooms)}
+        // updateRooms={(rooms) => updateField("rooms", rooms)}
         />
       ),
     },
