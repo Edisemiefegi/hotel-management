@@ -9,6 +9,7 @@ interface Props extends React.ComponentProps<typeof Input> {
   prepend?: ReactNode;
   append?: ReactNode;
   error?: string;
+  disabled?: boolean;
 }
 function InputComponet({
   label,
@@ -16,10 +17,11 @@ function InputComponet({
   prepend,
   append,
   error,
+  disabled,
   ...props
 }: Props) {
   return (
-    <div className="space-y-1">
+    <div className="flex flex-col gap-1">
       {label && (
         <label className="text-sm font-medium text-foreground">{label}</label>
       )}
@@ -40,8 +42,10 @@ function InputComponet({
         <Input
           className={cn(
             "h-full border-0 focus-visible:ring-0 focus-visible:ring-offset-0",
+            disabled && "cursor-not-allowed opacity-50",
             className
           )}
+          disabled={disabled}
           {...props}
         />
 

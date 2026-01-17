@@ -134,6 +134,7 @@ function Auth() {
                   value={form[field.name as keyof typeof form]}
                   onChange={handleChange}
                   append={field.append}
+                  disabled={isLoading}
                   error={error}
                   className=" md:placeholder:text-gray placeholder:text-white"
                 />
