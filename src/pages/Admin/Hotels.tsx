@@ -9,7 +9,6 @@ import HeaderPortal from "@/components/portals/HeaderPortal";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import type { Hotel, MenuItem } from "@/types";
 import ManageHotel from "@/components/hotel/MangeHotel";
-import Modal from "@/components/base/Modal";
 import AddHotel from "@/components/hotel/AddHotel";
 import { useAdmin } from "@/hooks/useAdmin";
 import { useEffect } from "react";
@@ -34,7 +33,7 @@ export default function Hotels() {
     getHotelsList();
 
     console.log(hotels, 'hotels');
-    
+
   }, []);
 
   const menu = (hotel: Hotel): MenuItem[] => [
@@ -79,9 +78,9 @@ export default function Hotels() {
         </Header>
       </HeaderPortal>
       {modal && (
-        <Modal onClose={() => setModal(false)}>
-          <AddHotel onClose={() => setModal(false)} />
-        </Modal>
+
+        <AddHotel onClose={() => setModal(false)} />
+
       )}
 
       <div className="flex justify-between ">

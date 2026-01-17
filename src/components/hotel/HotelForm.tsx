@@ -38,6 +38,8 @@ function HotelForm({ data, isEdit = false, onChange }: Props) {
     });
   };
 
+
+
   const tabs = [
     {
       value: "details",
