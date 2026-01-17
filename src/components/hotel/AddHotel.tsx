@@ -2,7 +2,7 @@ import { useAdmin } from "@/hooks/useAdmin";
 import { Button } from "../ui/button";
 import HotelForm from "./HotelForm";
 import { useState } from "react";
-import type { HotelFormData } from "@/types";
+import type { Hotel, } from "@/types";
 
 interface Props {
   onClose?: () => void;
@@ -11,7 +11,7 @@ function AddHotel({ onClose }: Props) {
   const { addHotel } = useAdmin();
   const [loading, setLoading] = useState(false);
 
-  const [form, setForm] = useState<HotelFormData>();
+  const [form, setForm] = useState<Hotel>();
 
   const handleSubmit = async () => {
     if (form) {

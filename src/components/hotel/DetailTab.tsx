@@ -1,16 +1,32 @@
 import InputComponet from "../base/InputComponet";
-import type { HotelFormData } from "../../types";
+import type { Hotel} from "../../types";
 import Upload from "../base/Upload";
 import { useEffect } from "react";
 import { Button } from "../ui/button";
+import SelectComponent from "../base/SelectComponent";
 
 interface Props {
-  form: HotelFormData;
-  updateField: (key: keyof HotelFormData, value: any) => void;
+  form: Hotel;
+  updateField: (key: keyof Hotel, value: any) => void;
 }
 
 function DetailTab({ form, updateField }: Props) {
-  const previews = form.images.map((file) => ({
+const options = [
+  {
+  value: "operational",
+  label: "Operational"
+},
+{
+  value: "renovation",
+  label: "Renovation"
+},
+{
+  value: "closed",
+  label: "Closed"
+}
+]
+
+  const previews = form.images.map((file: any) => ({
     file,
     url: URL.createObjectURL(file),
   }));
@@ -25,7 +41,7 @@ function DetailTab({ form, updateField }: Props) {
     updateField("images", [...form.images, ...newFiles]);
   };
 
-  const handleRemove = (fileToRemove: File) => {
+  const handleRemove = (fileToRemove: any) => {
     updateField(
       "images",
       form.images.filter((f) => f !== fileToRemove)
@@ -65,6 +81,9 @@ function DetailTab({ form, updateField }: Props) {
           onChange={(e) => updateField("description", e.target.value)}
         />
       </span>
+      <span>
+        <SelectComponent label="status" placeholder="status" options={options}/>
+      </span>
 
       <div className="w-full space-y-3">
         <label className="text-sm text-gray-700">Featured Image</label>
@@ -85,12 +104,12 @@ function DetailTab({ form, updateField }: Props) {
         </div>
       </div>
 
-      <InputComponet
+      {/* <InputComponet
         placeholder="eg. pool, WiFi, etc"
         label="Amenities (comma separated)"
         value={form.amenities}
         onChange={(e) => updateField("amenities", e.target.value)}
-      />
+      /> */}
     </div>
   );
 }

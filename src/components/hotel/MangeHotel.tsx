@@ -1,9 +1,9 @@
 import SidePanel from "@/components/layout/SidePanel";
-import { HOTELS } from "@/constants/hotels";
 import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import ViewHotel from "./ViewHotel";
 import EditHotel from "./EditHotel";
+import { useAdminStore } from "@/store/adminStore";
 
 type Props = {
   open?: boolean;
@@ -11,6 +11,7 @@ type Props = {
 };
 
 export default function ManageHotel({ open, onClose }: Props) {
+  const { hotels } = useAdminStore();
   const [searchParams] = useSearchParams();
 
   const hotelId = searchParams.get("hotel_id");
@@ -18,7 +19,7 @@ export default function ManageHotel({ open, onClose }: Props) {
 
   //TODO: change this to use DetailsQuery
   const hotel = useMemo(() => {
-    return HOTELS?.find((el) => el.id == hotelId);
+    return hotels?.find((el) => el.id == hotelId);
   }, [hotelId]);
 
   return (

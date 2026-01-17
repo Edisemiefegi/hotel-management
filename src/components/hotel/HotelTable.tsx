@@ -4,16 +4,17 @@ import { Progress } from "@/components/ui/progress";
 import DropDown from "@/components/base/DropDown";
 import type { MenuItem } from "@/types";
 import { Dot, MapPin, Star } from "lucide-react";
-import { HOTELS } from "@/constants/hotels";
 import { useState } from "react";
 import Pagination from "../base/Pagination";
+import { useAdminStore } from "@/store/adminStore";
 
 interface Props {
   menu: (hotel: any) => MenuItem[];
 }
 
 function HotelTable({ menu }: Props) {
-  const hotels = [...HOTELS,  ...HOTELS, ...HOTELS];
+
+  const {hotels} = useAdminStore()
 
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
@@ -29,7 +30,7 @@ function HotelTable({ menu }: Props) {
       render: (row: any) => (
         <div className="flex gap-3">
           <img
-            src="/hotels/hotel1.webp"
+            src={row.images[0]}
             alt=""
             className="w-12 h-12 rounded-lg"
           />
@@ -62,7 +63,7 @@ function HotelTable({ menu }: Props) {
             row.status == "Renovation" &&
               "bg-yellow-50 text-yellow-500 border-yellow-500",
             row.status == "Closed" && "bg-red-50 text-red-600 border-red-500",
-            "py-1 px-1.5 w-fit rounded-full text-xs flex items-center  border"
+            "p-0.5  w-fit rounded-full text-xs flex items-center  border"
           )}
         >
           <Dot size={15} /> {row.status}
@@ -78,7 +79,7 @@ function HotelTable({ menu }: Props) {
           <Star stroke="0" fill="#FBBF23" size={15} />
           <p>
             {" "}
-            {row.rating} <span className="text-gray text-sm">(12)</span>
+            {row.rating} <span className="text-gray text-sm">({row?.reviews?.length})</span>
           </p>
         </div>
       ),

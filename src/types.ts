@@ -24,20 +24,18 @@ export type SidePanelHeader = {
 };
 
 export type Hotel = {
-  id: string;
+  id: string,
   name: string;
   location: string;
   rating: number;
-  reviews: number;
-  pricePerNight: number;
-  currency: "NGN" | "USD" | string;
-  image: string;
+  reviews: string[];
+  images: string[];
   amenities: string[];
-  isFeatured: boolean;
   status: "Operational" | "Closed" | "Renovation";
-  phoneNumber: number;
-  rooms: Room[];
+  whatsapp: string;
+  rooms: string[];
   description: string;
+  addons: string[]
 };
 
 export type Room = {
