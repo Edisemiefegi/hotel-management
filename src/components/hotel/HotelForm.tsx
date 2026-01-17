@@ -3,34 +3,34 @@ import Tab from "../base/Tab";
 import RoomsTab from "./RoomsTab";
 import AddonTab from "./AddonTab";
 import DetailTab from "./DetailTab";
-import type { HotelFormData } from "@/types";
-import { useEffect, useState } from "react";
+import type { Hotel } from "@/types";
+import { useState } from "react";
+import { ROOMS } from "@/constants/hotels";
 
 interface Props {
-  data?: HotelFormData;
+  data?: Hotel;
   isEdit?: boolean;
-  onChange?: (form: HotelFormData) => void;
+  onChange?: (form: Hotel) => void;
 }
-const emptyForm: HotelFormData = {
+const emptyForm: Hotel = {
   name: "",
   location: "",
   whatsapp: "",
   description: "",
-  amenities: "",
+  amenities: [],
   rooms: [],
   addons: [],
-  images: []
+  images: [],
+  rating: 0,
+  reviews: [],
+  status: "Operational",
+  id: "",
 };
 
 function HotelForm({ data, isEdit = false, onChange }: Props) {
-  const [form, setForm] = useState<HotelFormData>(emptyForm);
+  const [form, setForm] = useState<Hotel>(isEdit && data ? data : emptyForm);
 
-
-  useEffect(() => {
-    console.log("data", data)
-  }, [isEdit, data])
-
-  const updateField = (key: keyof HotelFormData, value: any) => {
+  const updateField = (key: keyof Hotel, value: any) => {
     setForm((prev) => {
       const updated = { ...prev, [key]: value };
       onChange?.(updated);
@@ -49,7 +49,7 @@ function HotelForm({ data, isEdit = false, onChange }: Props) {
       label: "Rooms",
       content: (
         <RoomsTab
-          rooms={form.rooms}
+          rooms={ROOMS}
         // updateRooms={(rooms) => updateField("rooms", rooms)}
         />
       ),

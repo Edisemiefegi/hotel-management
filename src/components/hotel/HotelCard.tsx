@@ -16,7 +16,7 @@ function HotelCard({ hotel, menu}: Props) {
     <Card className="shadow-none !p-0 border hover:shadow-lg transition-all duration-300 flex h-80 min-h-fit w-full flex-col overflow-hidden group">
       <div className="h-2/5 w-full ">
         <img
-          src={hotel?.image}
+          src={hotel?.images[0]}
           className="object-cover overflow-hidden w-full h-full shrink-0 group-hover:scale-105 transition-all duration-300"
           alt=""
         />
@@ -40,7 +40,7 @@ function HotelCard({ hotel, menu}: Props) {
             <Star fill="#FBBF23" width={15} stroke="0" />
             <span className="font-medium">
               {hotel?.rating}{" "}
-              <span className="text-xs text-gray "> (12 reviews)</span>
+              <span className="text-xs text-gray "> ({hotel?.reviews?.length} reviews)</span>
             </span>
           </span>
         </div>

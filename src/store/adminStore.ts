@@ -3,13 +3,15 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 type admin = {
-  hotels: Hotel[] | [];
+  hotels: Hotel[];
+  setHotels: (hotels: Hotel[]) => void
 };
 
 export const useAdminStore = create<admin>()(
   persist(
-    (_set) => ({
+    (set) => ({
       hotels: [],
+      setHotels: (hotels) => set({hotels})
     }),
     { name: "admin" }
   )
