@@ -49,7 +49,9 @@ function Auth() {
     },
   ];
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
     if (!form.email || !form.password || (isSignup && !form.fullname)) {
       setError("All fields are required");
       return;
@@ -119,7 +121,7 @@ function Auth() {
           </div>
 
           {/* Form */}
-          <form className="space-y-4 w-full">
+          <form onSubmit={handleSubmit} className="space-y-4 w-full">
             {fields.map((field) => {
               if (field.show === false) return null;
 
@@ -137,13 +139,12 @@ function Auth() {
                 />
               );
             })}
-          </form>
-
           {/* submit button */}
           <div className="space-y-2">
             <Button
+            type="submit"
               disabled={isLoading}
-              onClick={handleSubmit}
+             
               className="w-full flex justify-center items-center gap-2"
             >
               {isLoading ? (
@@ -166,6 +167,9 @@ function Auth() {
               </span>
             </p>
           </div>
+
+          </form>
+
 
           {/* need help */}
           <div className="flex items-center gap-3 ">
