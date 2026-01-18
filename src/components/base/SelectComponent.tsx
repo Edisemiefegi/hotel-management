@@ -5,18 +5,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import FormErrorHint from "./form/FormErrorHint";
 
 type Options = {
   label: string;
   value: string;
 };
 
-interface Props {
+export interface SelectType {
   placeholder?: string;
   options: Options[];
   value?: string;
   onChange?: (value: string) => void;
+  disabled?: boolean;
   label?: string;
+  error?: string;
+  hint?: string;
 }
 
 function SelectComponent({
@@ -24,17 +28,20 @@ function SelectComponent({
   options,
   value,
   onChange,
-  label,
-}: Props) {
+  disabled,
+  // label,
+  error,
+  hint,
+}: SelectType) {
   return (
-    <div>
-      {label && (
+    <div className="w-full space-y-1">
+      {/* {label && (
         <label htmlFor="" className="mb-1 text-sm ">
           {label}
         </label>
-      )}
+      )} */}
 
-      <Select value={value} onValueChange={onChange}>
+      <Select value={value} onValueChange={onChange} disabled={disabled}>
         <SelectTrigger className="w-fit">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
@@ -46,6 +53,8 @@ function SelectComponent({
           ))}
         </SelectContent>
       </Select>
+
+      <FormErrorHint error={error} hint={hint} />
     </div>
   );
 }
