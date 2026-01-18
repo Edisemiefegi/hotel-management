@@ -1,4 +1,4 @@
-import InfoCard from "../base/InfoCard";
+import SummaryCard from "../base/SummaryCard";
 import { ROOMS } from "@/constants/hotels";
 import InputComponet from "../base/InputComponet";
 import { Button } from "../ui/button";
@@ -8,7 +8,7 @@ function AddonTab() {
   return (
     <div className="space-y-4">
       {ROOMS.map((item: any, index: number) => (
-        <InfoCard
+        <SummaryCard
           key={index}
           status={item.status}
           number={item.pricePerNight}

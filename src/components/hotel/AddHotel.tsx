@@ -1,10 +1,8 @@
 import { useAdmin } from "@/hooks/useAdmin";
-import { Button } from "../ui/button";
 import HotelForm from "./HotelForm";
-import { useState } from "react";
-import type { Hotel, } from "@/types";
 import Modal from "../base/Modal";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { Button } from "../ui/button";
 
 interface Props {
   onClose?: () => void;
@@ -14,24 +12,6 @@ function AddHotel({ onClose }: Props) {
 
 
   const { addHotel } = useAdmin();
-  const [loading, setLoading] = useState(false);
-
-  const [form, setForm] = useState<Hotel>();
-
-  const handleSubmit = async () => {
-    if (form) {
-      try {
-        setLoading(true);
-        await addHotel(form);
-        alert("successfull");
-        onClose?.();
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    }
-  };
 
   return (
     <Modal
@@ -43,13 +23,21 @@ function AddHotel({ onClose }: Props) {
           <Button variant={"outline"} onClick={onClose}>
             Cancel
           </Button>
-          <Button disabled={loading} onClick={handleSubmit}>
+          {/* <Button disabled={loading} onClick={handleSubmit}>
             {loading ? "loading..." : "Add Hotel"}
-          </Button>
+          </Button> */}
         </div>
       }>
 
-      <HotelForm data={form} onChange={setForm} />
+      <HotelForm
+        mode="add"
+        onCancel={onClose}
+        onSubmit={async (data) => {
+          await addHotel(data);
+          console.log(data, "test");
+          onClose?.();
+        }}
+      />
     </Modal>
   );
 }

@@ -1,5 +1,5 @@
 import { Dot, MapPin, Phone, Star } from "lucide-react";
-import InfoCard from "../base/InfoCard";
+import SummaryCard from "../base/SummaryCard";
 import { cn } from "@/lib/utils";
 import type { Key } from "react";
 
@@ -41,9 +41,9 @@ function ViewHotel({ hotel }: Props) {
       </p>
       <p className="flex text-sm">
         <Phone size={15} />
-        <span>+234 {hotel.phoneNumber}</span>
+        <span>+234 {hotel.whatsapp}</span>
       </p>
-      <div className="p-3  bg-gray-50  gap-3 grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 w-full rounded-md">
+      <div className="p-3  bg-gray-50  gap-3 grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 w-full overflow-x-auto rounded-md">
         {hotel?.images.map((img: string, index: Key | null) => (
           <img
             key={index}
@@ -75,11 +75,11 @@ function ViewHotel({ hotel }: Props) {
       </div>
 
       <div className="space-y-1">
-        <p className="font-medium">Rooms (3)</p>
-        <div className="space-y-2">
+        <p className="font-medium">Rooms ({hotel.rooms.length})</p>
+       {hotel.rooms.length == 0 ? <p className="text-gray">No room added yet</p> :  <div className="space-y-2">
           {" "}
           {hotel?.rooms.map((item: any, index: number) => (
-            <InfoCard
+            <SummaryCard
               key={index}
               status={item.status}
               number={item.pricePerNight}
@@ -87,7 +87,7 @@ function ViewHotel({ hotel }: Props) {
               text={item.bed + "." + item.size}
             />
           ))}
-        </div>
+        </div>} 
       </div>
 
       <div className="space-y-1">
@@ -95,7 +95,7 @@ function ViewHotel({ hotel }: Props) {
         <div className="space-y-2">
           {" "}
           {/* {hotel?.rooms.map((item: any, index: number) => (
-            <InfoCard
+            <SummaryCard
               key={index}
               number={item.pricePerNight}
               title={item.name}

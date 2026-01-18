@@ -32,8 +32,7 @@ export default function Hotels() {
 
     getHotelsList();
 
-    console.log(hotels, 'hotels');
-
+    console.log(hotels, "hotels");
   }, []);
 
   const menu = (hotel: Hotel): MenuItem[] => [
@@ -77,11 +76,7 @@ export default function Hotels() {
           </Button>
         </Header>
       </HeaderPortal>
-      {modal && (
-
-        <AddHotel onClose={() => setModal(false)} />
-
-      )}
+      {modal && <AddHotel onClose={() => setModal(false)} />}
 
       <div className="flex justify-between ">
         <SearchComponent />

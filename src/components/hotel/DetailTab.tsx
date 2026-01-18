@@ -1,115 +1,188 @@
 import InputComponet from "../base/InputComponet";
-import type { Hotel} from "../../types";
 import Upload from "../base/Upload";
-import { useEffect } from "react";
-import { Button } from "../ui/button";
 import SelectComponent from "../base/SelectComponent";
+import { useFormContext } from "react-hook-form";
+import { useEffect, useMemo, type Key } from "react";
+import { Button } from "../ui/button";
+import AmenitiesField from "./AmenitiesField";
 
-interface Props {
-  form: Hotel;
-  updateField: (key: keyof Hotel, value: any) => void;
-}
+function DetailTab() {
+  const { register, watch, setValue, formState } = useFormContext();
+  const options = [
+    {
+      value: "Operational",
+      label: "Operational",
+    },
+    {
+      value: "Renovation",
+      label: "Renovation",
+    },
+    {
+      value: "Closed",
+      label: "Closed",
+    },
+  ];
 
-function DetailTab({ form, updateField }: Props) {
-const options = [
-  {
-  value: "operational",
-  label: "Operational"
-},
-{
-  value: "renovation",
-  label: "Renovation"
-},
-{
-  value: "closed",
-  label: "Closed"
-}
-]
 
-  const previews = form.images.map((file: any) => ({
-    file,
-    url: URL.createObjectURL(file),
-  }));
+  const formFields = [
+    {
+      type: "input",
+      name: "name",
+      label: "Hotel Name",
+      placeholder: "E.g Sunrise Hotel",
+    },
+    {
+      type: "input",
+      name: "location",
+      label: "Location",
+      placeholder: "E.g Ikeja, Lagos",
+    },
+    {
+      type: "input",
+      name: "whatsapp",
+      label: "Phone Number",
+      placeholder: "E.g 08171212121",
+    },
+    {
+      type: "textarea",
+      name: "description",
+      label: "Description",
+      placeholder: "Enter hotel description",
+    },
+    {
+      type: "select",
+      name: "status",
+      label: "Status",
+      placeholder: "Select hotel status",
+    },
+     
+    {
+      type: "upload",
+      name: "images",
+      label: "Featured Images",
+    },
+  ];
+
+  const images = watch("images") ?? [];
+
+  const getImageUrl = (image: File | string) => {
+    if (typeof image === "string") return image;
+    return URL.createObjectURL(image);
+  };
+
+  const previews = useMemo(
+    () =>
+      images.map((img: File | string) => ({
+        img,
+        url: getImageUrl(img),
+      })),
+    [images]
+  );
 
   useEffect(() => {
     return () => {
-      previews.forEach((p) => URL.revokeObjectURL(p.url));
+      previews.forEach(({ img, url }: any) => {
+        if (img instanceof File) {
+          URL.revokeObjectURL(url);
+        }
+      });
     };
-  }, [form.images]);
+  }, [previews]);
 
-  const handleFiles = (newFiles: File[]) => {
-    updateField("images", [...form.images, ...newFiles]);
-  };
-
-  const handleRemove = (fileToRemove: any) => {
-    updateField(
+  const handleRemove = (imageToRemove: File | string) => {
+    setValue(
       "images",
-      form.images.filter((f) => f !== fileToRemove)
+      images.filter((img: string | File) => img !== imageToRemove),
+      { shouldValidate: true }
     );
   };
 
   return (
     <div className="space-y-3">
-      <InputComponet
-        placeholder="enter hotel name"
-        label="Hotel Name"
-        value={form.name}
-        onChange={(e) => updateField("name", e.target.value)}
-      />
+      {formFields.map((field, index) => {
+        const error = formState.errors[field.name];
+        return (
+          <div key={index}>
+            {/* input */}
+        
+              {field.type == "input" && (
+              <InputComponet
+                placeholder={field.placeholder}
+                label={field.label}
+                {...register(field.name)}
+              />
+            )}
 
-      <div className="grid grid-cols-2 gap-4 ">
-        <InputComponet
-          placeholder="enter hotel location"
-          label="Location"
-          value={form.location}
-          onChange={(e) => updateField("location", e.target.value)}
-        />
-        <InputComponet
-          placeholder="enter hotel phone number"
-          label="WhatsApp Number"
-          value={form.whatsapp}
-          onChange={(e) => updateField("whatsapp", e.target.value)}
-        />
-      </div>
+            {/* textarea */}
+            {field.type == "textarea" && (
+              <span>
+                <p className="text-sm  font-medium">{field.label}</p>
+                <textarea
+                  placeholder={field.placeholder}
+                  className="w-full h-20 p-2 border rounded-md"
+                  {...register(field.name)}
+                />
+              </span>
+            )}
 
-      <span>
-        <p className="text-sm font-medium">Description</p>
-        <textarea
-          placeholder="hotel description"
-          className="w-full h-20 p-2 border rounded-md"
-          value={form.description}
-          onChange={(e) => updateField("description", e.target.value)}
-        />
-      </span>
-      <span>
-        <SelectComponent label="status" placeholder="status" options={options}/>
-      </span>
+            {/* select */}
+            {field.type == "select" && (
+              <SelectComponent
+                value={watch(field.name)}
+                onChange={(value) =>
+                  setValue(field.name, value, { shouldValidate: true })
+                }
+                label={field.label}
+                placeholder={field.placeholder}
+                options={options}
+              />
+            )}
 
-      <div className="w-full space-y-3">
-        <label className="text-sm text-gray-700">Featured Image</label>
-        <Upload multiple onChange={handleFiles} />
-        <div className="grid  grid-cols-4 sm:grid-cols-6  gap-3 w-full">
-          {previews.map(({ file, url }, i) => (
-            <div key={i} className="relative">
-              <img src={url} className="h-15 w-15 object-cover rounded-md" />
-              <Button
-                size={"icon-sm"}
-                onClick={() => handleRemove(file)}
-                className="absolute top-0 right-0 bg-red-500  text-white rounded-full "
-              >
-                ×
-              </Button>
-            </div>
-          ))}
-        </div>
-      </div>
+            {/* image */}
+            {field.type == "upload" && (
+              <div className="w-full space-y-3">
+                <label className="text-sm text-gray-700">{field.label}</label>
+                <Upload
+                  multiple
+                  onChange={(files) =>
+                    setValue(field.name, [...images, ...files], {
+                      shouldValidate: true,
+                    })
+                  }
+                />
 
-      {/* <InputComponet
-        placeholder="eg. pool, WiFi, etc"
-        label="Amenities (comma separated)"
-        value={form.amenities}
-        onChange={(e) => updateField("amenities", e.target.value)}
-      /> */}
+                <div className="grid  grid-cols-4 sm:grid-cols-6  gap-3 w-full">
+                  {previews.map(
+                    ({ img, url }: any, i: Key | null | undefined) => (
+                      <div key={i} className="relative">
+                        <img
+                          src={url}
+                          className="h-15 w-15 object-cover rounded-md"
+                        />
+                        <Button
+                          size={"icon-sm"}
+                          onClick={() => handleRemove(img)}
+                          className="absolute top-0 right-0 bg-red-500  text-white rounded-full "
+                        >
+                          ×
+                        </Button>
+                      </div>
+                    )
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* error */}
+            {error && (
+              <p className="text-red-500 text-sm">{error.message as string}</p>
+            )}
+          </div>
+        );
+      })}
+<AmenitiesField />
+
+    
     </div>
   );
 }

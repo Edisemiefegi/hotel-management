@@ -11,7 +11,6 @@ interface Props {
   descriptionClassName?: string;
   noHeader?: boolean;
   noFooter?: boolean;
-  fullScreen?: boolean;
   className?: string;
   contentClassName?: string;
   headerClassName?: string;

@@ -55,7 +55,7 @@ export type HotelFormData = {
   location: string;
   whatsapp: string;
   description: string;
-  amenities: string;
+  amenities: [];
   rooms: Room[];
   addons: any[];
   images: any[]

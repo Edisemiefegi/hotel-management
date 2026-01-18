@@ -1,6 +1,6 @@
 import type { Hotel, Room } from "@/types";
 
-export const ROOMS: Room[]  = [
+export const ROOMS: Room[] = [
   {
     id: "rm_001",
     name: "Park View Suite",
@@ -227,3 +227,60 @@ export const HOTELS: Hotel[] = [
       "Experience Venetian elegance in our restored 15th-century palazzo overlooking the Grand Canal. Features original frescoes, Murano glass chandeliers, and private water taxi service.",
   },
 ] as const;
+
+export const BOOKINGS = [
+  {
+    bookingId: "BK-001",
+    guestName: "John Doe",
+    guestEmail: "john.doe@email.com",
+    hotel: "Sunset Hotel",
+    room: "Deluxe Room",
+    duration: "3 nights",
+    status: "Confirmed",
+    amount: "NGN30,000",
+  },
+  {
+    bookingId: "BK-002",
+    guestName: "Sarah Williams",
+    guestEmail: "sarah.w@email.com",
+    hotel: "Ocean View Resort ",
+    room: "Deluxe Room",
+
+    duration: "2 nights",
+    status: "Confirmed",
+    amount: "NGN130,000",
+  },
+  {
+    bookingId: "BK-003",
+    guestName: "Michael Brown",
+    guestEmail: "michael.b@email.com",
+    hotel: "Grand Palace Hotel",
+    room: "Deluxe Room",
+
+    duration: "5 nights",
+    status: "Pending",
+    amount: "NGN50,000",
+  },
+  {
+    bookingId: "BK-004",
+    guestName: "Amina Yusuf",
+    guestEmail: "amina.y@email.com",
+    room: "Deluxe Room",
+
+    hotel: "City Lights Inn ",
+    duration: "1 night",
+    status: "Confirmed",
+    amount: "NGN30,000",
+  },
+  {
+    bookingId: "BK-005",
+    guestName: "David Okoye",
+    guestEmail: "david.o@email.com",
+    hotel: "Palm Breeze Hotel ",
+    room: "Deluxe Room",
+
+    duration: "4 nights",
+    status: "Cancelled",
+    amount: "NGN30,000",
+  },
+];

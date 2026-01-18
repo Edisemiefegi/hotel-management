@@ -1,4 +1,4 @@
-import InfoCard from "../base/InfoCard";
+import SummaryCard from "../base/SummaryCard";
 import AddRoom from "../rooms/AddRoom";
 import type { Room } from "@/types";
 
@@ -15,7 +15,7 @@ function RoomsTab({ rooms }: Props) {
   return (
     <div className="space-y-4">
       {rooms.map((item: any, index: number) => (
-        <InfoCard
+        <SummaryCard
           key={index}
           status={item.status}
           number={item.pricePerNight}
