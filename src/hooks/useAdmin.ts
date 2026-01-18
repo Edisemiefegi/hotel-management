@@ -1,4 +1,5 @@
 import { ID, storage, tableDB } from "@/appwriteConfig";
+import type { HotelFormType } from "@/schemas/hotel.schema";
 import { useAdminStore } from "@/store/adminStore";
 import type { Hotel } from "@/types";
 import type { Models } from "appwrite";
@@ -48,7 +49,7 @@ export const useAdmin = () => {
     return uploadedIds;
   };
 
-  const addHotel = async (form: Hotel) => {
+  const addHotel = async (form: HotelFormType) => {
     const uploadedFileIds = await uplaodImage(form?.images, bucket_Id);
 
     const hotel = {
@@ -60,8 +61,8 @@ export const useAdmin = () => {
       rooms: form.rooms,
       addons: form.addons,
       images: form.images,
-      rating: form.rating,
-      reviews: form.reviews,
+      rating: 0,
+      reviews: [],
       status: form.status,
     };
     const hotelData = { ...hotel, images: uploadedFileIds };

@@ -1,18 +1,22 @@
-import { Button } from "../ui/button";
 import HotelForm from "./HotelForm";
 interface Props {
   hotel?: any;
+  onClose?: () => void;
 }
-function EditHotel({ hotel }: Props) {
-  
+function EditHotel({ hotel, onClose }: Props) {
   return (
     <div className="w-full relative  space-y-4">
-      <HotelForm isEdit data={hotel} />
+      <HotelForm
+     
+        mode="edit"
+        onCancel={onClose}
+        onSubmit={async (data) => {
+          console.log(data, "test");
+          onClose?.();
+        }}
+      />
 
-      <div className="justify-end flex space-x-3">
-        <Button variant={"outline"}>Cancel</Button>
-        <Button>Save Changes</Button>
-      </div>
+    
     </div>
   );
 }
