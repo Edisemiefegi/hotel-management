@@ -1,25 +1,28 @@
+import Card from "./Card";
+import type { ReactNode } from "react";
 
+type info = {
+  title: string;
+  number: string;
+  percentage: string;
+  icon: ReactNode;
+};
 
 interface Props {
-    title?: string;
-    text?: string;
-    number?: number;
-    status?: string
+  info: info;
 }
 
-function InfoCard({title, text, number, status}: Props) {
+function InfoCard({ info }: Props) {
   return (
-    <div className='bg-secondary/30 text-gray p-3 rounded-md flex  justify-between w-full'>
-        <div>
-            <p className="font-medium">{title}</p>
-            <p className="text-xs">{text}</p>
-        </div>
-        <div>
-            <p className="font-medium">NGN{number}</p>
-            <p className="text-xs text-green-600">{status}</p>
-        </div>
-    </div>
-  )
+    <Card className="flex justify-between">
+      <div>
+        <p className="text-sm font-medium text-gray">{info.title}</p>
+        <p className="text-lg font-bold">{info.number}</p>
+        <p className="text-xs text-gray">{info.percentage}</p>
+      </div>
+      {info.icon}
+    </Card>
+  );
 }
 
-export default InfoCard
+export default InfoCard;

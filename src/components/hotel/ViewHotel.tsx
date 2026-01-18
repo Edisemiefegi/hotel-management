@@ -1,5 +1,5 @@
 import { Dot, MapPin, Phone, Star } from "lucide-react";
-import InfoCard from "../base/InfoCard";
+import SummaryCard from "../base/SummaryCard";
 import { cn } from "@/lib/utils";
 import type { Key } from "react";
 
@@ -79,7 +79,7 @@ function ViewHotel({ hotel }: Props) {
        {hotel.rooms.length == 0 ? <p className="text-gray">No room added yet</p> :  <div className="space-y-2">
           {" "}
           {hotel?.rooms.map((item: any, index: number) => (
-            <InfoCard
+            <SummaryCard
               key={index}
               status={item.status}
               number={item.pricePerNight}
@@ -95,7 +95,7 @@ function ViewHotel({ hotel }: Props) {
         <div className="space-y-2">
           {" "}
           {/* {hotel?.rooms.map((item: any, index: number) => (
-            <InfoCard
+            <SummaryCard
               key={index}
               number={item.pricePerNight}
               title={item.name}
