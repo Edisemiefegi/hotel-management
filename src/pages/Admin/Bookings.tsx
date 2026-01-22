@@ -71,7 +71,7 @@ function Bookings() {
       </HeaderPortal>
       <Info />
 
-      <div className="flex justify-between  w-full ">
+      <div className="flex justify-between mt-6 w-full ">
         <SearchComponent />
         <div className="flex gap-4">
           <SelectComponent options={sort.hotel} placeholder="All Hotel" />
