@@ -7,36 +7,64 @@ import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ROOMS } from "@/constants/hotels";
 import { hotelSchema, type HotelFormType } from "@/schemas/hotel.schema";
-import { Button } from "../ui/button";
 import { Form } from "../ui/form";
+import { forwardRef, useImperativeHandle } from "react";
+import { useAdmin } from "@/hooks/useAdmin";
 
 interface Props {
   mode: "add" | "edit";
   initialData?: HotelFormType;
-  onSubmit: (data: HotelFormType) => Promise<void> | void;
-  onCancel?: () => void;
+  onSuccess?: () => void;
 }
 
-function HotelForm({ mode, initialData, onSubmit, onCancel }: Props) {
-  const methods = useForm<HotelFormType>({
-    resolver: zodResolver(hotelSchema),
+export interface HotelFormRef {
+  submit: () => Promise<void>;
+}
+
+const HotelForm = forwardRef<HotelFormRef, Props>(({ mode, initialData, onSuccess }, ref) => {
+  const { addHotel } = useAdmin();
+  const form = useForm<HotelFormType>({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(hotelSchema) as any,
     defaultValues:
       mode === "edit" && initialData
         ? initialData
         : {
-            name: "",
-            location: "",
-            whatsapp: "",
-            description: "",
-            status: "Operational",
-            images: [],
-            rooms: [],
-            addons: [],
-            amenities: []
-          },
+          name: "",
+          location: "",
+          whatsapp: "",
+          description: "",
+          status: "Operational",
+          images: [],
+          rooms: [],
+          addons: [],
+          amenities: []
+        },
   });
 
-  const { isSubmitting } = methods.formState;
+
+  const handleSubmit = async (data: HotelFormType) => {
+    try {
+      if (mode === "add") {
+        await addHotel(data);
+      } else {
+        // TODO: Implement updateHotel in useAdmin hook
+        console.log("Edit mode - updateHotel not implemented yet", data);
+      }
+      onSuccess?.();
+    } catch (error) {
+      console.error("Failed to submit hotel:", error);
+    }
+  };
+
+  useImperativeHandle(ref, () => ({
+    submit: async () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await form.handleSubmit(handleSubmit as any)();
+    },
+
+  }), [form]);
+
   const tabs = [
     {
       value: "details",
@@ -55,27 +83,21 @@ function HotelForm({ mode, initialData, onSubmit, onCancel }: Props) {
     },
   ];
 
+
+
+
   return (
-    <FormProvider {...methods}>
-      <Form {...methods}>
-        <form onSubmit={methods.handleSubmit(onSubmit)}>
+    <FormProvider {...form}>
+      <Form {...form}>
+        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+        <form onSubmit={form.handleSubmit(handleSubmit as any)}>
           <Tab tabs={tabs} />
-          <div className="flex justify-end gap-4">
-            <Button variant={"outline"} onClick={onCancel}>
-              Cancel
-            </Button>
-            <Button disabled={isSubmitting} type="submit">
-              {isSubmitting ? (
-                "loading..."
-              ) : (
-                <div>{mode === "add" ? "Add Hotel" : "Edit Hotel"}</div>
-              )}{" "}
-            </Button>
-          </div>
         </form>
       </Form>
     </FormProvider>
   );
-}
+});
+
+HotelForm.displayName = "HotelForm";
 
 export default HotelForm;
