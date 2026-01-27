@@ -1,5 +1,4 @@
 import Table from "../base/Table";
-import { cn } from "@/lib/utils";
 import DropDown from "@/components/base/DropDown";
 import type { MenuItem } from "@/types";
 import { useState } from "react";

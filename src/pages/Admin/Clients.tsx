@@ -1,7 +1,5 @@
 import Header from "@/components/base/Header";
 import SearchComponent from "@/components/base/SearchComponent";
-import SelectComponent from "@/components/base/SelectComponent";
-import Info from "@/components/bookings/Info";
 import ManageBooking from "@/components/bookings/ManageBooking";
 import ClientsTable from "@/components/clients/ClientsTable";
 import HeaderPortal from "@/components/portals/HeaderPortal";
@@ -17,17 +15,7 @@ function Clients() {
   const isOpen = !!searchParams.get("booking_id");
   const onClose = () => navigate(-1);
 
-  const sort = {
-    hotel: [
-      { label: "Hotel1", value: "hotel1" },
-      { label: "Hotel2", value: "hotel2" },
-    ],
-    status: [
-      { label: "Available", value: "available" },
-      { label: "Booked", value: "booked" },
-      { label: "Mantainance", value: "maint" },
-    ],
-  };
+ 
 
   const menu = (client: any): MenuItem[] => [
     {

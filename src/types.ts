@@ -33,7 +33,7 @@ export type Hotel = {
   amenities: string[];
   status: "Operational" | "Closed" | "Renovation";
   whatsapp: string;
-  rooms: string[];
+  rooms: Room[];
   description: string;
   addons: string[]
 };
