@@ -3,6 +3,7 @@ import SearchComponent from "@/components/base/SearchComponent";
 import SelectComponent from "@/components/base/SelectComponent";
 import BookingsTable from "@/components/bookings/BookingsTable";
 import Info from "@/components/bookings/Info";
+import ManageBooking from "@/components/bookings/ManageBooking";
 import HeaderPortal from "@/components/portals/HeaderPortal";
 import { Button } from "@/components/ui/button";
 import type { MenuItem } from "@/types";
@@ -70,6 +71,7 @@ function Bookings() {
         </Header>
       </HeaderPortal>
       <Info />
+      <ManageBooking open={isOpen} onClose={onClose}/>
 
       <div className="flex justify-between mt-6 w-full ">
         <SearchComponent />

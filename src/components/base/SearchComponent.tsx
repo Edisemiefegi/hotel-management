@@ -8,7 +8,7 @@ function SearchComponent() {
       <InputGroupAddon>
       <Search/>
       </InputGroupAddon>
-      <InputGroupAddon align="inline-end">12 results </InputGroupAddon>
+      <InputGroupAddon align="inline-end"><span>12</span> results </InputGroupAddon>
       </InputGroup>
     </div>
   )
