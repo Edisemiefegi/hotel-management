@@ -7,11 +7,12 @@ import Pagination from "../base/Pagination";
 import { BOOKINGS } from "@/constants/hotels";
 
 interface Props {
-  menu: (booking: any) => MenuItem[];
+  menu: (booking: any) => MenuItem[]  ;
 }
 
 function BookingsTable({ menu }: Props) {
   const bookings = BOOKINGS;
+
 
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);

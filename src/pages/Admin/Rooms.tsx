@@ -76,9 +76,9 @@ export default function Rooms() {
       </HeaderPortal>
 
       <div className="flex justify-between ">
-        <div className="flex justify-between w-full">
+        <div className="sm:flex-row flex-col gap-2 flex justify-between w-full">
           <SearchComponent />
-          <div className="flex gap-4">
+          <div className="flex gap-4 ">
             <SelectComponent options={sort.hotel} placeholder="All Hotel" />
             <SelectComponent options={sort.status} placeholder="All Status" />
           </div>

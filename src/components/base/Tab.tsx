@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 interface TabItem {
   value: string;
   label: string;
-  content: ReactNode;
+  content?: ReactNode;
 }
 
 interface Props {

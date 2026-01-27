@@ -19,7 +19,7 @@ function Header({
   return (
     <header
       className={cn(
-        "flex items-center justify-between bg-white py-4",
+        "flex sm:flex-row gap-1 flex-col sm:items-center justify-between bg-white py-4",
         className
       )}
     >
