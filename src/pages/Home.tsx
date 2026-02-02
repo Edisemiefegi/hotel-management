@@ -1,16 +1,17 @@
-import { Button } from "@/components/ui/button"
-import { Link } from "react-router-dom"
-
-
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 function Home() {
   return (
-    <div  className="p-8">
-   <Button>
-    <Link to={'/authentication'}>Admin</Link>
-   </Button>
+    <div className=" flex flex-col gap-4">
+      <Button>
+        <Link to={"/authentication"}>Admin</Link>
+      
+      </Button>
+        <div className="w-96 h-96 bg-primary"></div>
+        <div className="w-96 h-96 bg-secondary"></div>
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;

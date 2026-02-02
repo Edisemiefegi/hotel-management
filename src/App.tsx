@@ -10,11 +10,11 @@ import Clients from "./pages/Admin/Clients";
 import Settings from "./pages/Admin/Settings";
 import Auth from "./pages/Auth";
 import PrivateRoutes from "./utils/PrivateRoute";
+import LandingPage from "./layouts/LandingPage";
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
       <Route element={<PrivateRoutes />}>
         <Route element={<Admin />}>
           <Route path="/admin/dashboard" element={<Dashboard />} />
@@ -25,7 +25,10 @@ function App() {
           <Route path="/admin/settings" element={<Settings />} />
         </Route>
       </Route>
-      <Route path="/about" element={<About />} />
+      <Route element={<LandingPage />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+      </Route>
       <Route path="/authentication" element={<Auth />} />
     </Routes>
   );
