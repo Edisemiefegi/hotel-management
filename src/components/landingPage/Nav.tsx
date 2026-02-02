@@ -14,7 +14,7 @@ function Nav() {
   ];
 
   return (
-    <nav className="fixed top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b">
+    <nav className="fixed top-0 z-50 w-full bg-white/90 backdrop-blur-md shadow-sm">
       <div className="container mx-auto px-8 h-16 flex items-center justify-between">
         <Link
           to="/"
@@ -34,7 +34,7 @@ function Nav() {
                 `text-sm font-medium transition ${
                   isActive
                     ? "text-primary border-b-2 border-primary pb-1"
-                    : "text-gray-600 hover:text-primary"
+                    : "text-gray-700 hover:text-primary"
                 }`
               }
             >
@@ -44,9 +44,12 @@ function Nav() {
         </div>
 
         <div className="hidden md:block">
-          <Button variant="outline" className="flex gap-2">
-            <User className="w-4 h-4" />
-            Login
+          <Button  >
+            <Link to={"/authentication"} className="flex gap-2 items-center">
+              {" "}
+              <User className="w-4 h-4" />
+              Login
+            </Link>
           </Button>
         </div>
 

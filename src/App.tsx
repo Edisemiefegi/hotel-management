@@ -1,9 +1,13 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Admin from "./layouts/Admin";
 import Dashboard from "./pages/Admin/Dashboard";
 import Hotels from "./pages/Admin/Hotels";
+import LandingHotels from "./pages/Hotels";
 import Rooms from "./pages/Admin/Rooms";
 import Bookings from "./pages/Admin/Bookings";
 import Clients from "./pages/Admin/Clients";
@@ -11,8 +15,21 @@ import Settings from "./pages/Admin/Settings";
 import Auth from "./pages/Auth";
 import PrivateRoutes from "./utils/PrivateRoute";
 import LandingPage from "./layouts/LandingPage";
+import Contact from "./pages/Contact";
+import { useEffect } from "react";
 
 function App() {
+
+  const location = useLocation();
+
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
+  useEffect(() => {
+    AOS.refresh();
+  }, [location.pathname]);
+ 
   return (
     <Routes>
       <Route element={<PrivateRoutes />}>
@@ -28,6 +45,8 @@ function App() {
       <Route element={<LandingPage />}>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="/hotels" element={<LandingHotels />} />
+        <Route path="/contact" element={<Contact />} />
       </Route>
       <Route path="/authentication" element={<Auth />} />
     </Routes>

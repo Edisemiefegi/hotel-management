@@ -6,8 +6,8 @@ function LandingPage() {
   return (
     <main className="min-h-screen flex flex-col  ">
       <Nav />
-      <div className="flex-1 overflow-y-auto py-20">
-        <div className="px-8 container mx-auto">
+      <div className="flex-1 overflow-y-auto ">
+        <div className="">
           <Outlet />
         </div>
       </div>
