@@ -1,12 +1,13 @@
+import FeaturedHotels from "@/components/landingPage/home/FeaturedHotels";
 import Hero from "@/components/landingPage/home/Hero";
+import OurStory from "@/components/landingPage/home/OurStory";
 
 function Home() {
   return (
-    <div className=" flex flex-col gap-4 ">
+    <div className=" flex flex-col gap-12 ">
       <Hero/>
-      
-        <div  className="w-96 h-96 bg-primary"></div>
-        <div className="w-96 h-96 bg-secondary"></div>
+      <OurStory/>
+      <FeaturedHotels/>
     </div>
   );
 }

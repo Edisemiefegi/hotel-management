@@ -1,7 +1,8 @@
 import Card from "@/components/base/Card";
+import { DatePicker } from "@/components/base/DatePicker";
 import InputComponet from "@/components/base/InputComponet";
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, Search, User } from "lucide-react";
+import {  MapPin, Search, User } from "lucide-react";
 import { useEffect, useState } from "react";
 
 function Hero() {
@@ -58,22 +59,17 @@ function Hero() {
         <div className="grid md:grid-cols-4 grid-cols-2 gap-3 w-full">
           <InputComponet
             placeholder="Where are you going?"
-            append={<MapPin size={15} />}
+            prepend={<MapPin size={15} />}
             label="Location"
           />
-          <InputComponet
-            placeholder="Select date"
-            append={<Calendar size={15} />}
-            label="Check-in"
-          />
-          <InputComponet
-            placeholder="Select date"
-            append={<Calendar size={15} />}
-            label="Check-out"
-          />
+          
+           <DatePicker label="Check-in"/>
+                      <DatePicker label="Check-out"/>
+
+         
           <InputComponet
             placeholder="Guest"
-            append={<User size={15} />}
+            prepend={<User size={15} />}
             label="Guest"
           />
         </div>
