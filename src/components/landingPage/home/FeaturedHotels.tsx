@@ -1,20 +1,10 @@
 import HotelCard from "@/components/hotel/HotelCard";
 import { Button } from "@/components/ui/button";
-import { useAdmin } from "@/hooks/useAdmin";
 import { useAdminStore } from "@/store/adminStore";
 import { ArrowRight } from "lucide-react";
-import { useEffect } from "react";
 
 function FeaturedHotels() {
-  const { getHotels } = useAdmin();
-
-  useEffect(() => {
-    const getHotelsList = async () => {
-      await getHotels();
-    };
-
-    getHotelsList();
-  }, []);
+ 
   const { hotels } = useAdminStore();
   const visibleHotels = [...hotels, ...hotels, ...hotels].slice(0, 3);
 
