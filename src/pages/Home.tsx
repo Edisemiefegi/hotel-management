@@ -1,4 +1,4 @@
-import Faq from "@/components/landingPage/home/faq";
+import Faq from "@/components/landingPage/home/Faq";
 import FeaturedHotels from "@/components/landingPage/home/FeaturedHotels";
 import Hero from "@/components/landingPage/home/Hero";
 import Journey from "@/components/landingPage/home/Journey";
