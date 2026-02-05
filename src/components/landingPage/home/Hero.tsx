@@ -38,7 +38,7 @@ function Hero() {
         data-aos="zoom-in"
         className="relative z-10 px-8 text-center  space-y-6"
       >
-        <h1 className="text-white flex flex-col gap-2 text-4xl md:text-6xl font-bold leading-tight">
+        <h1 className="text-white flex flex-col gap-2 text-3xl md:text-6xl font-bold leading-tight">
           <span> Find Your Perfect</span>
           <span
             key={index}
