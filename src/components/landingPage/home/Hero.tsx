@@ -18,7 +18,7 @@ function Hero() {
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % texts.length);
-    }, 2000);
+    }, 200);
 
     return () => clearInterval(interval);
   }, []);
@@ -42,7 +42,7 @@ function Hero() {
           <span> Find Your Perfect</span>
           <span
             key={index}
-            className="text-primary inline-block transition-all duration-300"
+            className="text-primary inline-block transition-all duration-100"
           >
             {texts[index]}
           </span>
