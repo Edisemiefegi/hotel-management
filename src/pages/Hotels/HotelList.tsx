@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { useAdminStore } from "@/store/adminStore";
 import { SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
-function Hotels() {
+function HotelList() {
   const { hotels } = useAdminStore();
   const displayedHotels = [...hotels, ...hotels, ...hotels];
 
@@ -20,10 +21,17 @@ function Hotels() {
       <HotelsHeader />
 
       <div className="space-y-2">
-        <Button variant={"outline"} onClick={openFilter} className="md:hidden">
-          <span className="font-semibold text-lg">Filters</span>
-          <SlidersHorizontal size={20} />
-        </Button>
+        <div className="flex justify-between items-center">
+          <Button
+            variant={"outline"}
+            onClick={openFilter}
+            className="md:hidden"
+          >
+            <span className="font-semibold text-lg">Filters</span>
+            <SlidersHorizontal size={20} />
+          </Button>
+          <span className="text-xs text-gray">3 hotels found</span>
+        </div>
 
         <section className="grid grid-cols-5 gap-4">
           <aside className="hidden md:block md:col-span-2">
@@ -31,14 +39,15 @@ function Hotels() {
           </aside>
 
           <div className="col-span-5 md:col-span-3 space-y-4">
-            {displayedHotels.map((hotel, index) => (
-              <HotelCard
-                key={index}
-                layout="row"
-                className="w-full"
-                hotel={hotel}
-                menu={[]}
-              />
+            {displayedHotels.map((hotel) => (
+              <Link key={hotel.id} to={`/hotels/${hotel.id}`} className="block">
+                <HotelCard
+                  layout="row"
+                  className="w-full"
+                  hotel={hotel}
+                  menu={[]}
+                />
+              </Link>
             ))}
           </div>
         </section>
@@ -48,7 +57,7 @@ function Hotels() {
       {isFilterOpen && (
         <>
           <div
-            className="fixed inset-0 bg-black/40 z-40 md:hidden"
+            className="fixed inset-0 bg-black/40 z-40 h-full md:hidden"
             onClick={closeFilter}
           />
 
@@ -66,4 +75,4 @@ function Hotels() {
   );
 }
 
-export default Hotels;
+export default HotelList;

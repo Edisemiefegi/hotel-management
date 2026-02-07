@@ -44,7 +44,7 @@ function Nav() {
         </div>
 
         <div className="hidden md:block">
-          <Button  >
+          <Button>
             <Link to={"/authentication"} className="flex gap-2 items-center">
               {" "}
               <User className="w-4 h-4" />
@@ -82,8 +82,11 @@ function Nav() {
             ))}
 
             <Button variant="outline" className="mt-2 flex gap-2">
-              <User className="w-4 h-4" />
-              Login
+              <Link to={"/authentication"} className="flex gap-2 items-center">
+                {" "}
+                <User className="w-4 h-4" />
+                Login
+              </Link>
             </Button>
           </div>
         </div>

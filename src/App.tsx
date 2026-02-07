@@ -7,7 +7,6 @@ import About from "./pages/About";
 import Admin from "./layouts/Admin";
 import Dashboard from "./pages/Admin/Dashboard";
 import Hotels from "./pages/Admin/Hotels";
-import LandingHotels from "./pages/Hotels";
 import Rooms from "./pages/Admin/Rooms";
 import Bookings from "./pages/Admin/Bookings";
 import Clients from "./pages/Admin/Clients";
@@ -17,9 +16,10 @@ import PrivateRoutes from "./utils/PrivateRoute";
 import LandingPage from "./layouts/LandingPage";
 import Contact from "./pages/Contact";
 import { useEffect } from "react";
+import HotelList from "./pages/Hotels/HotelList";
+import HotelDetail from "./pages/Hotels/HotelDetail";
 
 function App() {
-
   const location = useLocation();
 
   useEffect(() => {
@@ -29,7 +29,7 @@ function App() {
   useEffect(() => {
     AOS.refresh();
   }, [location.pathname]);
- 
+
   return (
     <Routes>
       <Route element={<PrivateRoutes />}>
@@ -45,7 +45,11 @@ function App() {
       <Route element={<LandingPage />}>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/hotels" element={<LandingHotels />} />
+
+        <Route>
+          <Route path="/hotels" element={<HotelList />} />
+          <Route path="/hotels/:id" element={<HotelDetail />} />
+        </Route>
         <Route path="/contact" element={<Contact />} />
       </Route>
       <Route path="/authentication" element={<Auth />} />
