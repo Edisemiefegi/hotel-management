@@ -1,3 +1,5 @@
+import HotelCard from "@/components/hotel/HotelCard";
+import BookingLayout from "@/components/landingPage/booking/BookingLayout";
 import { Button } from "@/components/ui/button";
 import { useAdminStore } from "@/store/adminStore";
 import {
@@ -5,9 +7,10 @@ import {
   Heart,
   MapPin,
   Share,
+  Sparkles,
   Star,
 } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { Link,  useParams } from "react-router-dom";
 
 function HotelDetail() {
   const { id } = useParams();
@@ -59,13 +62,8 @@ function HotelDetail() {
         </div>
       </section>
 
-      <section
-        className="
-    grid grid-flow-col auto-cols-[80%] gap-4 overflow-x-auto
-    md:auto-cols-auto md:grid-cols-4 md:grid-rows-2
-    md:overflow-x-visible
-  "
-      >
+      {/* image */}
+      <section className="grid grid-flow-col auto-cols-[80%] gap-4 overflow-x-auto md:auto-cols-auto md:grid-cols-4 md:grid-rows-2 md:overflow-x-visible">
         {images.map((item, index) => (
           <img
             key={index}
@@ -78,6 +76,47 @@ function HotelDetail() {
           />
         ))}
       </section>
+
+      {/* about */}
+      <BookingLayout hotel={hotel}>
+        <span className="space-y-1">
+          <h1 className="text-lg">About this propertity</h1>
+          <p className="text-gray text-sm">{hotel.description}</p>
+        </span>
+
+        <span className="space-y-1">
+          <h1 className="text-lg">Amenities</h1>
+          <h2 className="flex gap-3 flex-wrap">
+            {hotel.amenities.map((item, index) => (
+              <p
+                className="bg-secondary px-3 py-2 w-fit flex items-center rounded-md text-sm font-light"
+                key={index}
+              >
+                <span className="text-primary">
+                  <Sparkles size={15} />
+                </span>{" "}
+                {item}
+              </p>
+            ))}
+          </h2>
+        </span>
+
+        <div className="space-y-1">
+          <h1 className="text-lg">Available Rooms</h1>
+
+          <div className="space-y-3">
+            {[...hotels, ...hotels, ...hotels].map((hotel) => (
+              <HotelCard
+                layout="row"
+                className="w-full"
+                hotel={hotel}
+                menu={[]}
+              />
+            ))}
+          </div>
+        </div>
+      </BookingLayout>
+
     </main>
   );
 }

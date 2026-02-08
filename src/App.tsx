@@ -18,6 +18,7 @@ import Contact from "./pages/Contact";
 import { useEffect } from "react";
 import HotelList from "./pages/Hotels/HotelList";
 import HotelDetail from "./pages/Hotels/HotelDetail";
+import Booking from "./pages/Booking";
 
 function App() {
   const location = useLocation();
@@ -46,10 +47,10 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
 
-        <Route>
-          <Route path="/hotels" element={<HotelList />} />
-          <Route path="/hotels/:id" element={<HotelDetail />} />
-        </Route>
+        <Route path="/hotels" element={<HotelList />} />
+        <Route path="/hotels/:id" element={<HotelDetail />}/>
+        <Route path="/hotels/:id/booking" element={<Booking />} />
+
         <Route path="/contact" element={<Contact />} />
       </Route>
       <Route path="/authentication" element={<Auth />} />
