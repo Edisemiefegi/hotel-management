@@ -20,7 +20,7 @@ interface Props {
   setPriceRange?: any;
   rating?: string | null;
   setRating?: any;
-  amenities?: string[];
+  amenities?: any[];
   setAmenities?: any;
   onSave?: () => void;
   onClear?: () => void

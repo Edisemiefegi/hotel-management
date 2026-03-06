@@ -1,5 +1,5 @@
 import Header from "@/components/base/Header";
-import SearchComponent from "@/components/base/SearchComponent";
+// import SearchComponent from "@/components/base/SearchComponent";
 import SelectComponent from "@/components/base/SelectComponent";
 import BookingsTable from "@/components/bookings/BookingsTable";
 import Info from "@/components/bookings/Info";
@@ -74,7 +74,7 @@ function Bookings() {
       <ManageBooking open={isOpen} onClose={onClose}/>
 
       <div className="flex justify-between mt-6 w-full ">
-        <SearchComponent />
+        {/* <SearchComponent /> */}
         <div className="flex gap-4">
           <SelectComponent options={sort.hotel} placeholder="All Hotel" />
           <SelectComponent options={sort.status} placeholder="All Status" />

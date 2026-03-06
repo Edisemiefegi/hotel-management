@@ -21,7 +21,7 @@ export interface HotelFormRef {
 
 const HotelForm = forwardRef<HotelFormRef, Props>(
   ({ mode, initialData, onSuccess }, ref) => {
-    const { addHotel, addRoom, handleAddon, updateHotel } = useAdmin();
+    const { addHotel, addRoom, handleAddon } = useAdmin();
 
     const form = useForm<HotelFormType>({
       resolver: zodResolver(hotelSchema) as any,

@@ -1,6 +1,5 @@
-import type { Room } from "@/types";
 
-export const ROOMS: Room[] = [
+export const ROOMS = [
   {
     id: "rm_001",
     name: "Park View Suite",

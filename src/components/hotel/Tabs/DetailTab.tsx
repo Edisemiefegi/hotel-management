@@ -4,9 +4,7 @@ import AmenitySelector from "../AmenitySelector";
 import { Controller } from "react-hook-form";
 import type { FieldConfig } from "@/types/hotel";
 
-interface Props {
-  isEdit?: string
-}
+
 
 function DetailTab() {
   const { control } = useFormContext();

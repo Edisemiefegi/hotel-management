@@ -1,5 +1,5 @@
 import Header from "@/components/base/Header";
-import SearchComponent from "@/components/base/SearchComponent";
+// import SearchComponent from "@/components/base/SearchComponent";
 import ManageBooking from "@/components/bookings/ManageBooking";
 import ClientsTable from "@/components/clients/ClientsTable";
 import HeaderPortal from "@/components/portals/HeaderPortal";
@@ -53,7 +53,7 @@ function Clients() {
       <ManageBooking open={isOpen} onClose={onClose} />
 
       <div className=" w-full md:w-1/2 ">
-        <SearchComponent />
+        {/* <SearchComponent /> */}
       </div>
 
       <ClientsTable menu={menu} />

@@ -1,6 +1,5 @@
 import { MapPin, Star } from "lucide-react";
 import Card from "../base/Card";
-import { Progress } from "../ui/progress";
 import DropDown from "../base/DropDown";
 import type {  MenuItem } from "@/types/index";
 import type { Hotel } from "@/types/hotel";

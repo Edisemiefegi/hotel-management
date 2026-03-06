@@ -1,7 +1,7 @@
 import { ID, storage, tableDB } from "@/appwriteConfig";
 import type { HotelFormType } from "@/schemas/hotel.schema";
 import { useAdminStore } from "@/store/adminStore";
-import type { Addon, Hotel, Room } from "@/types/hotel";
+import type { Addon,  Room } from "@/types/hotel";
 import { Query, type Models } from "appwrite";
 
 const db_Id = "admin-id";
@@ -205,12 +205,10 @@ export const useAdmin = () => {
     console.log(result);
   };
 
-  const updateHotel = async (id: string) => {};
   return {
     addHotel,
     getHotels,
     deleteHotel,
-    updateHotel,
     addRoom,
     getHotelRooms,
     handleAddon,

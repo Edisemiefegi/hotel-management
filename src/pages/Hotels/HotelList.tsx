@@ -3,6 +3,7 @@ import Filter from "@/components/landingPage/hotels/Filter";
 import SearchHotel from "@/components/landingPage/SearchHotel";
 import { Button } from "@/components/ui/button";
 import { useAdminStore } from "@/store/adminStore";
+import type { amenities } from "@/types/hotel";
 import { SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -10,7 +11,7 @@ import { Link } from "react-router-dom";
 interface Filters {
   priceRange: [number, number];
   rating: string | null;
-  amenities: string[];
+  amenities: any;
 }
 
 function HotelList() {
@@ -67,7 +68,7 @@ function HotelList() {
 
     const matchesAmenities =
       appliedFilters.amenities.length === 0 ||
-      appliedFilters.amenities.every((a) => hotel.amenities.includes(a));
+      appliedFilters.amenities.every((a: amenities) => hotel.amenities.includes(a));
 
     return matchesSearch && matchesPrice && matchesRating && matchesAmenities;
   });
