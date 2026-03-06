@@ -7,20 +7,26 @@ import { usePersistentState } from "@/hooks/usePersistentState";
 import HotelTable from "@/components/hotel/HotelTable";
 import HeaderPortal from "@/components/portals/HeaderPortal";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import type { Hotel, MenuItem } from "@/types";
+import type { MenuItem } from "@/types";
+import type { Hotel } from "@/types/hotel";
 import ManageHotel from "@/components/hotel/MangeHotel";
 import AddHotel from "@/components/hotel/AddHotel";
 import { useAdmin } from "@/hooks/useAdmin";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAdminStore } from "@/store/adminStore";
+import Dialog from "@/components/base/Dialog";
 
 export default function Hotels() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const [modal, setModal] = usePersistentState("modal", false);
   const [isGrid, setIsGrid] = usePersistentState("hotelsView", false);
-  const { getHotels } = useAdmin();
+  const { getHotels, deleteHotel } = useAdmin();
   const { hotels } = useAdminStore();
+  const [search, setSearch] = useState("");
+
+  const [showdialog, setShowDialog] = useState(false);
+  const [selectedHotelId, setSelectedHotelId] = useState<string | null>(null);
 
   const isOpen = !!searchParams.get("hotel_id");
   const onClose = () => navigate(-1);
@@ -31,9 +37,14 @@ export default function Hotels() {
     };
 
     getHotelsList();
+  }, [hotels]);
 
-    console.log(hotels, "hotels");
-  }, []);
+  const filteredHotels = hotels.filter((hotel) =>
+    [hotel.name, hotel.location]
+      .join(" ")
+      .toLowerCase()
+      .includes(search.toLowerCase()),
+  );
 
   const menu = (hotel: Hotel): MenuItem[] => [
     {
@@ -58,6 +69,8 @@ export default function Hotels() {
     {
       label: "Delete",
       onClick: () => {
+        setSelectedHotelId(hotel.id);
+        setShowDialog(true);
         console.log("delete");
       },
     },
@@ -79,7 +92,13 @@ export default function Hotels() {
       {modal && <AddHotel onClose={() => setModal(false)} />}
 
       <div className="flex justify-between ">
-        <SearchComponent />
+        <SearchComponent
+          value={search}
+          result="hotels"
+          onChange={setSearch}
+          resultsCount={filteredHotels.length}
+          placeholder="Search by name or location..."
+        />
 
         <Button
           className="hover:text-primary"
@@ -92,13 +111,25 @@ export default function Hotels() {
 
       {!isGrid ? (
         <section className="grid xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
-          {hotels.map((hotel, index) => (
-            <HotelCard key={index} hotel={hotel} menu={menu(hotel)}></HotelCard>
+          {filteredHotels.map((hotel) => (
+            <HotelCard key={hotel.id} hotel={hotel} menu={menu(hotel)}></HotelCard>
           ))}
         </section>
       ) : (
         <HotelTable menu={menu} />
       )}
+
+      <Dialog
+        open={showdialog}
+        onOpenChange={setShowDialog}
+        title="Delete Hotel?"
+        description="This will permanently delete this hotel."
+        onConfirm={() => {
+          if (selectedHotelId) {
+            deleteHotel(selectedHotelId);
+          }
+        }}
+      />
       <ManageHotel open={isOpen} onClose={onClose} />
     </main>
   );

@@ -1,6 +1,5 @@
 import Table from "../base/Table";
 import { cn } from "@/lib/utils";
-import { Progress } from "@/components/ui/progress";
 import DropDown from "@/components/base/DropDown";
 import type { MenuItem } from "@/types";
 import { Dot, MapPin, Star } from "lucide-react";
@@ -22,6 +21,7 @@ function HotelTable({ menu }: Props) {
   const endIndex = startIndex + pageSize;
 
   const paginatedHotels = hotels.slice(startIndex, endIndex);
+
 
   const headers = [
     {
@@ -84,16 +84,7 @@ function HotelTable({ menu }: Props) {
         </div>
       ),
     },
-    {
-      title: "Occupancy",
-      field: "occupancy",
-      render: () => (
-        <div className="space-y-1">
-          <Progress value={33} />
-          <span className="text-xs"> 33% full</span>
-        </div>
-      ),
-    },
+    
     {
       title: "Action",
       field: "action",

@@ -4,7 +4,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { MenuItem } from "@/types";
+import type { MenuItem } from "@/types/index";
 import { Ellipsis } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";

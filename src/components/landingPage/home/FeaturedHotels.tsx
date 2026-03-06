@@ -2,9 +2,9 @@ import HotelCard from "@/components/hotel/HotelCard";
 import { Button } from "@/components/ui/button";
 import { useAdminStore } from "@/store/adminStore";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 function FeaturedHotels() {
- 
   const { hotels } = useAdminStore();
   const visibleHotels = [...hotels, ...hotels, ...hotels].slice(0, 3);
 
@@ -35,17 +35,19 @@ function FeaturedHotels() {
             </div>
           ))}
         </div>
-        <Button
-          data-aos="fade"
-          data-aos-delay="400"
-          variant={"outline"}
-          className="rounded-full w-fit pr-1"
-        >
-          See more hotels
-          <span className="rounded-full bg-primary text-white flex items-center justify-center p-2 ">
-            <ArrowRight />
-          </span>
-        </Button>
+        <Link to={"/hotels"}>
+          <Button
+            data-aos="fade"
+            data-aos-delay="400"
+            variant={"outline"}
+            className="rounded-full w-fit pr-1"
+          >
+            See more hotels
+            <span className="rounded-full bg-primary text-white flex items-center justify-center p-2 ">
+              <ArrowRight />
+            </span>
+          </Button>
+        </Link>
       </section>
     </div>
   );

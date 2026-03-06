@@ -1,7 +1,7 @@
 import Table from "../base/Table";
 import { cn } from "@/lib/utils";
 import DropDown from "@/components/base/DropDown";
-import type { MenuItem } from "@/types";
+import type { MenuItem } from "@/types/index";
 import { useState } from "react";
 import Pagination from "../base/Pagination";
 import { BOOKINGS } from "@/constants/hotels";

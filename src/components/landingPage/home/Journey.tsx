@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 function Journey() {
   return (
@@ -13,7 +14,7 @@ function Journey() {
             access to members-only deals.
           </p>
           <Button className="bg-white text-primary">
-            Sign Up{" "}
+        <Link to={'/authentication'}>    Sign Up{" "}</Link>
             <span>
               <ChevronRight />
             </span>

@@ -1,16 +1,10 @@
+import { hotelAmenities } from "@/components/hotel/AmenitySelector";
 import HotelCard from "@/components/hotel/HotelCard";
 import BookingLayout from "@/components/landingPage/booking/BookingLayout";
 import { Button } from "@/components/ui/button";
 import { useAdminStore } from "@/store/adminStore";
-import {
-  ChevronLeft,
-  Heart,
-  MapPin,
-  Share,
-  Sparkles,
-  Star,
-} from "lucide-react";
-import { Link,  useParams } from "react-router-dom";
+import { ChevronLeft, Heart, MapPin, Share, Star } from "lucide-react";
+import { Link, useParams } from "react-router-dom";
 
 function HotelDetail() {
   const { id } = useParams();
@@ -87,17 +81,25 @@ function HotelDetail() {
         <span className="space-y-1">
           <h1 className="text-lg">Amenities</h1>
           <h2 className="flex gap-3 flex-wrap">
-            {hotel.amenities.map((item, index) => (
-              <p
-                className="bg-secondary px-3 py-2 w-fit flex items-center rounded-md text-sm font-light"
-                key={index}
-              >
-                <span className="text-primary">
-                  <Sparkles size={15} />
-                </span>{" "}
-                {item}
-              </p>
-            ))}
+            {hotel.amenities.map((value, index) => {
+              const amenity = hotelAmenities.find((a) => (a.value === value)  );
+
+              if (!amenity) return null;
+
+              const Icon = amenity.icon;
+
+              return (
+                <p
+                  key={index}
+                  className="bg-secondary px-3 py-2 w-fit flex items-center gap-2 rounded-md text-sm font-light"
+                >
+                  <span className="text-primary">
+                    <Icon size={15} />
+                  </span>
+                  {amenity.label}
+                </p>
+              );
+            })}
           </h2>
         </span>
 
@@ -105,8 +107,9 @@ function HotelDetail() {
           <h1 className="text-lg">Available Rooms</h1>
 
           <div className="space-y-3">
-            {[...hotels, ...hotels, ...hotels].map((hotel) => (
+            {hotels.map((hotel) => (
               <HotelCard
+                key={hotel.id}
                 layout="row"
                 className="w-full"
                 hotel={hotel}
@@ -116,7 +119,6 @@ function HotelDetail() {
           </div>
         </div>
       </BookingLayout>
-
     </main>
   );
 }

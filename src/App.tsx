@@ -7,7 +7,6 @@ import About from "./pages/About";
 import Admin from "./layouts/Admin";
 import Dashboard from "./pages/Admin/Dashboard";
 import Hotels from "./pages/Admin/Hotels";
-import Rooms from "./pages/Admin/Rooms";
 import Bookings from "./pages/Admin/Bookings";
 import Clients from "./pages/Admin/Clients";
 import Settings from "./pages/Admin/Settings";
@@ -37,7 +36,6 @@ function App() {
         <Route element={<Admin />}>
           <Route path="/admin/dashboard" element={<Dashboard />} />
           <Route path="/admin/hotels" element={<Hotels />} />
-          <Route path="/admin/rooms" element={<Rooms />} />
           <Route path="/admin/bookings" element={<Bookings />} />
           <Route path="/admin/clients" element={<Clients />} />
           <Route path="/admin/settings" element={<Settings />} />
@@ -48,7 +46,7 @@ function App() {
         <Route path="/about" element={<About />} />
 
         <Route path="/hotels" element={<HotelList />} />
-        <Route path="/hotels/:id" element={<HotelDetail />}/>
+        <Route path="/hotels/:id" element={<HotelDetail />} />
         <Route path="/hotels/:id/booking" element={<Booking />} />
 
         <Route path="/contact" element={<Contact />} />

@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { SlidersHorizontal, Star } from "lucide-react";
-import { useState } from "react";
 
 const RATINGS = ["4.5+", "4+", "3.5+", "3+"];
 const AMENITIES = [
@@ -16,8 +15,36 @@ const AMENITIES = [
   "room service",
 ];
 
-function Filter() {
-  const [priceRange, setPriceRange] = useState([20000, 40000]);
+interface Props {
+  priceRange?: number[];
+  setPriceRange?: any;
+  rating?: string | null;
+  setRating?: any;
+  amenities?: string[];
+  setAmenities?: any;
+  onSave?: () => void;
+  onClear?: () => void
+}
+
+function Filter({
+  priceRange,
+  setPriceRange,
+  rating,
+  setRating,
+  amenities = [],
+  setAmenities,
+  onSave,
+  onClear
+}: Props) {
+  // const [priceRange, setPriceRange] = useState([20000, 40000]);
+
+  const toggleAmenity = (amenity: any) => {
+    if (amenities?.includes(amenity)) {
+      setAmenities(amenities.filter((a) => a !== amenity));
+    } else {
+      setAmenities([...amenities, amenity]);
+    }
+  };
 
   return (
     <Card className="space-y-6 md:border border-none md:shadow shadow-none">
@@ -40,14 +67,14 @@ function Filter() {
 
         <div className="space-y-1">
           <span className="text-sm text-muted-foreground flex justify-end">
-            {priceRange.join(", ")}
+            {priceRange?.join(", ")}
           </span>
           <Slider
             value={priceRange}
             onValueChange={setPriceRange}
             min={10000}
-            max={60000}
-            step={5000}
+            max={600000}
+            step={20000}
           />
         </div>
       </section>
@@ -59,12 +86,17 @@ function Filter() {
         </span>
 
         <div className="flex flex-wrap gap-2">
-          {RATINGS.map((rating) => (
+          {RATINGS.map((item) => (
             <Button
-              key={rating}
-              className="bg-secondary text-primary hover:bg-secondary/50"
+              key={item}
+              onClick={() => setRating(item)}
+              className={`${
+                rating === item
+                  ? "bg-primary text-white"
+                  : "bg-secondary text-primary hover:text-white"
+              }`}
             >
-              {rating}
+              {item}
             </Button>
           ))}
         </div>
@@ -77,12 +109,21 @@ function Filter() {
         <div className="space-y-2">
           {AMENITIES.map((item) => (
             <label key={item} className="flex items-center gap-2 text-xs">
-              <Checkbox />
+              <Checkbox
+                checked={amenities?.includes(item)}
+                onCheckedChange={() => toggleAmenity(item)}
+              />
               {item}
             </label>
           ))}
         </div>
       </section>
+      <div className="grid grid-cols-2 gap-2">
+        <Button onClick={onSave}>Save</Button>
+        <Button onClick={onClear} variant={"outline"}>
+          Clear Filter
+        </Button>
+      </div>
     </Card>
   );
 }

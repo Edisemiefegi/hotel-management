@@ -127,7 +127,7 @@ export const useAuth = () => {
   const authenticateUser = async () => {
     try {
       const session = await account.get();
-      console.log(session, "session");
+      // console.log(session, "session");
       if (!session || !session?.status) {
         console.log("No session found");
         await logout();

@@ -1,4 +1,3 @@
-import AddRoom from "./AddRoom";
 import { Button } from "../ui/button";
 import {
   CircleCheck,
@@ -75,7 +74,7 @@ function EditRoom() {
           ))}
         </div>
       </div>
-      <AddRoom />
+      {/* <AddRoom /> */}
 
       <div>
         <label htmlFor="" className="text-gray-800 text-sm">

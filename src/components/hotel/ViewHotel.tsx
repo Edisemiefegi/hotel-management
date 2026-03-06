@@ -1,15 +1,34 @@
 import { Dot, MapPin, Phone, Star } from "lucide-react";
 import SummaryCard from "../base/SummaryCard";
 import { cn } from "@/lib/utils";
-import type { Key } from "react";
+import { useEffect, useState, type Key } from "react";
+import { hotelAmenities } from "./AmenitySelector";
+import { useAdmin } from "@/hooks/useAdmin";
+import type { Models } from "appwrite";
+import AddonInfo from "../addons/AddonInfo";
 
 interface Props {
   hotel?: any;
 }
 
-
 function ViewHotel({ hotel }: Props) {
-  console.log(hotel, 'hoteeses');
+  const { getHotelRooms, getHotelAddons } = useAdmin();
+  const [rooms, setRooms] = useState<Models.DefaultRow[]>([]);
+  const [addons, setAddons] = useState<Models.DefaultRow[]>([]);
+
+  useEffect(() => {
+    const fetchdata = async () => {
+      if (!hotel?.id) return;
+
+      const res = await getHotelRooms(hotel?.id);
+      const addon = await getHotelAddons(hotel?.id);
+
+      setRooms(res);
+      setAddons(addon);
+    };
+
+    fetchdata();
+  }, [hotel.id]);
 
   return (
     <div className="space-y-4  ">
@@ -28,7 +47,7 @@ function ViewHotel({ hotel }: Props) {
             hotel.status == "Renovation" &&
               "bg-yellow-50 text-yellow-500 border-yellow-500",
             hotel.status == "Closed" && "bg-red-50 text-red-600 border-red-500",
-            "p-0.5 w-fit rounded-full text-xs flex items-center  border"
+            "p-0.5 w-fit rounded-full text-xs flex items-center  border",
           )}
         >
           <Dot /> {hotel.status}
@@ -61,47 +80,65 @@ function ViewHotel({ hotel }: Props) {
 
       <div className="space-y-1">
         <p className="font-medium">Amenities</p>
-        <div className="space-x-2">
+        <div className="space-x-2 flex flex-wrap">
           {" "}
-          {hotel?.amenities.map((item: string, index: number) => (
-            <span
-              className="text-xs bg-gray-100 p-1 px-2 rounded-full"
-              key={index}
-            >
-              {item}
-            </span>
-          ))}
+          {hotel?.amenities.map((value: string, index: any) => {
+            const amenity = hotelAmenities.find((a) => a.value === value);
+
+            if (!amenity) return null;
+
+            const Icon = amenity.icon;
+
+            return (
+              <p
+                key={index}
+                className="bg-secondary px-3 py-2 w-fit flex items-center gap-2 rounded-md text-sm font-light"
+              >
+                <span className="text-primary">
+                  <Icon size={15} />
+                </span>
+                {amenity.label}
+              </p>
+            );
+          })}
         </div>
       </div>
 
       <div className="space-y-1">
         <p className="font-medium">Rooms ({hotel.rooms.length})</p>
-       {hotel.rooms.length == 0 ? <p className="text-gray">No room added yet</p> :  <div className="space-y-2">
-          {" "}
-          {hotel?.rooms.map((item: any, index: number) => (
-            <SummaryCard
-              key={index}
-              status={item.status}
-              number={item.pricePerNight}
-              title={item.name}
-              text={item.bed + "." + item.size}
-            />
-          ))}
-        </div>} 
+        {rooms.length == 0 ? (
+          <p className="text-gray">No room added yet</p>
+        ) : (
+          <div className="space-y-2">
+            {" "}
+            {rooms.map((item: any, index: number) => (
+              <SummaryCard
+                key={index}
+                status={item.status}
+                number={item.pricePerNight}
+                title={item.type}
+                text={
+                  item.bed + " " + "bed" + "." + item.capacity + " " + "guest"
+                }
+                image={item.imageUrl}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="space-y-1">
         <p className="font-medium">Add-ons (4)</p>
         <div className="space-y-2">
-          {" "}
-          {/* {hotel?.rooms.map((item: any, index: number) => (
-            <SummaryCard
+          {addons?.map((item, index) => (
+            <AddonInfo
               key={index}
-              number={item.pricePerNight}
-              title={item.name}
-              text={item.bed + "." + item.size}
+              price={item.price}
+              addonName={item.addonName}
+              description={item.description}
+              icon={item.icon}
             />
-          ))} */}
+          ))}
         </div>
       </div>
     </div>

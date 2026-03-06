@@ -1,9 +1,6 @@
 import Card from "@/components/base/Card";
-import { DatePicker } from "@/components/base/DatePicker";
-import InputComponet from "@/components/base/InputComponet";
-import { Button } from "@/components/ui/button";
-import {  MapPin, Search, User } from "lucide-react";
 import { useEffect, useState } from "react";
+// import SearchHotel from "../SearchHotel";
 
 function Hero() {
   const texts = [
@@ -54,30 +51,12 @@ function Hero() {
         </p>
       </div>
 
-    <div data-aos="fade-up"    data-aos-duration="1000"  className="px-8 z-10 " >
-          <Card  className="  bg-white max-w-4xl space-y-4 w-full ">
-        <div className="grid md:grid-cols-4 grid-cols-2 gap-3 w-full">
-          <InputComponet
-            placeholder="Where are you going?"
-            prepend={<MapPin size={15} />}
-            label="Location"
-          />
-          
-           <DatePicker label="Check-in"/>
-                      <DatePicker label="Check-out"/>
-
-         
-          <InputComponet
-            placeholder="Guest"
-            prepend={<User size={15} />}
-            label="Guest"
-          />
-        </div>
-        <Button className="w-full">
-          <Search /> Search Hotels{" "}
-        </Button>
-      </Card>
-    </div>
+      <div data-aos="fade-up" data-aos-duration="1000" className="px-8 z-10 ">
+        <Card className="  bg-white max-w-4xl space-y-4 w-full ">
+          {/* <SearchHotel/> */}
+          ss
+        </Card>
+      </div>
     </div>
   );
 }

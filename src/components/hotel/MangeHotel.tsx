@@ -36,7 +36,7 @@ export default function ManageHotel({ open, onClose }: Props) {
             description={isEdit ? hotel?.name : " "}
           >
             <SidePanel.Content>
-              {isEdit ? <EditHotel /> : <ViewHotel hotel={hotel} />}
+              {isEdit ? <EditHotel hotel={hotel} /> : <ViewHotel hotel={hotel} />}
             </SidePanel.Content>
           </SidePanel>
         </>

@@ -1,45 +1,123 @@
 import HotelCard from "@/components/hotel/HotelCard";
 import Filter from "@/components/landingPage/hotels/Filter";
-import HotelsHeader from "@/components/landingPage/hotels/HotelsHeader";
+import SearchHotel from "@/components/landingPage/SearchHotel";
 import { Button } from "@/components/ui/button";
 import { useAdminStore } from "@/store/adminStore";
 import { SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+interface Filters {
+  priceRange: [number, number];
+  rating: string | null;
+  amenities: string[];
+}
+
 function HotelList() {
   const { hotels } = useAdminStore();
-  const displayedHotels = [...hotels, ...hotels, ...hotels];
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [search, setSearch] = useState("");
+
+  // Temporary filter state (UI only)
+  const [tempFilters, setTempFilters] = useState<Filters>({
+    priceRange: [20000, 500000],
+    rating: null,
+    amenities: [],
+  });
+
+  // Applied filters (used for filtering hotels)
+  const [appliedFilters, setAppliedFilters] = useState<Filters>({
+    priceRange: [20000, 500000],
+    rating: null,
+    amenities: [],
+  });
 
   const openFilter = () => setIsFilterOpen(true);
   const closeFilter = () => setIsFilterOpen(false);
 
+  const handleSaveFilters = () => {
+    setAppliedFilters(tempFilters);
+    closeFilter();
+  };
+
+  const handleClearFilters = () => {
+    const defaultFilters: Filters = {
+      priceRange: [20000, 500000],
+      rating: null,
+      amenities: [],
+    };
+    setTempFilters(defaultFilters);
+    setAppliedFilters(defaultFilters);
+  };
+
+  const filteredHotels = hotels.filter((hotel) => {
+    const matchesSearch = [hotel.name, hotel.location]
+      .join(" ")
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+    const matchesPrice = "20000"
+      // hotel.price >= appliedFilters.priceRange[0] &&
+      // hotel.price <= appliedFilters.priceRange[1];
+
+    const matchesRating = appliedFilters.rating
+      ? hotel.rating >= parseFloat(appliedFilters.rating)
+      : true;
+
+    const matchesAmenities =
+      appliedFilters.amenities.length === 0 ||
+      appliedFilters.amenities.every((a) => hotel.amenities.includes(a));
+
+    return matchesSearch && matchesPrice && matchesRating && matchesAmenities;
+  });
+
   return (
     <main className="container mx-auto px-8 py-20 space-y-10 min-h-screen">
-      <HotelsHeader />
+      <header className="space-y-8">
+        <h2 className="font-bold text-2xl">All Hotels</h2>
+        <SearchHotel search={search} setSearch={setSearch} />
+      </header>
 
       <div className="space-y-2">
         <div className="flex justify-between items-center">
           <Button
-            variant={"outline"}
+            variant="outline"
             onClick={openFilter}
             className="md:hidden"
           >
             <span className="font-semibold text-lg">Filters</span>
             <SlidersHorizontal size={20} />
           </Button>
-          <span className="text-xs text-gray">3 hotels found</span>
+          <span className="text-xs text-gray">
+            {filteredHotels.length} hotels found
+          </span>
         </div>
 
         <section className="grid grid-cols-5 gap-4">
+          {/* Desktop Filter */}
           <aside className="hidden md:block md:col-span-2">
-            <Filter />
+            <Filter
+              priceRange={tempFilters.priceRange}
+              setPriceRange={(v: any) =>
+                setTempFilters({ ...tempFilters, priceRange: v })
+              }
+              rating={tempFilters.rating}
+              setRating={(v: any) =>
+                setTempFilters({ ...tempFilters, rating: v })
+              }
+              amenities={tempFilters.amenities}
+              setAmenities={(v: any) =>
+                setTempFilters({ ...tempFilters, amenities: v })
+              }
+              onSave={handleSaveFilters}
+              onClear={handleClearFilters}
+            />
           </aside>
 
+          {/* Hotels List */}
           <div className="col-span-5 md:col-span-3 space-y-4">
-            {displayedHotels.map((hotel) => (
+            {filteredHotels.map((hotel) => (
               <Link key={hotel.id} to={`/hotels/${hotel.id}`} className="block">
                 <HotelCard
                   layout="row"
@@ -49,6 +127,9 @@ function HotelList() {
                 />
               </Link>
             ))}
+            {filteredHotels.length === 0 && (
+              <p className="text-xl text-center">No hotel found</p>
+            )}
           </div>
         </section>
       </div>
@@ -60,14 +141,27 @@ function HotelList() {
             className="fixed inset-0 bg-black/40 z-40 h-full md:hidden"
             onClick={closeFilter}
           />
-
           <aside className="fixed top-0 right-0 h-full w-[85%] max-w-sm bg-background z-50 p-4 overflow-y-auto md:hidden animate-slide-in">
             <div className="flex justify-between items-center mb-4">
               <h2 className="font-semibold text-lg">Filters</h2>
               <button onClick={closeFilter}>✕</button>
             </div>
-
-            <Filter />
+            <Filter
+              priceRange={tempFilters.priceRange}
+              setPriceRange={(v: any) =>
+                setTempFilters({ ...tempFilters, priceRange: v })
+              }
+              rating={tempFilters.rating}
+              setRating={(v: any) =>
+                setTempFilters({ ...tempFilters, rating: v })
+              }
+              amenities={tempFilters.amenities}
+              setAmenities={(v: any) =>
+                setTempFilters({ ...tempFilters, amenities: v })
+              }
+              onSave={handleSaveFilters}
+              onClear={handleClearFilters}
+            />
           </aside>
         </>
       )}

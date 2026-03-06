@@ -1,5 +1,4 @@
 import {
-  BedDouble,
   Building2,
   CalendarCheck,
   LayoutDashboard,
@@ -21,7 +20,6 @@ import { useAuth } from "@/hooks/useAuth";
 const tabs = [
   { icon: LayoutDashboard, label: "Dashboard", path: ROUTES.Dashboard },
   { icon: Building2, label: "Hotels", path: ROUTES.Hotels },
-  { icon: BedDouble, label: "Rooms", path: ROUTES.Rooms },
   { icon: CalendarCheck, label: "Bookings", path: ROUTES.Bookings },
   { icon: Users, label: "Clients", path: ROUTES.Clients },
   { icon: Settings, label: "Settings", path: ROUTES.Settings },

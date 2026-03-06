@@ -1,22 +1,13 @@
 import HotelForm from "./HotelForm";
-// interface Props {
-//   hotel?: any;
-//   onClose?: () => void;
-// }
-function EditHotel() {
+interface Props {
+  hotel?: any;
+}
+function EditHotel({ hotel }: Props) {
+  // console.log(hotel, "hotel passed ");
+
   return (
     <div className="w-full relative  space-y-4">
-      <HotelForm
-     
-        mode="edit"
-        // onCancel={onClose}
-        // onSubmit={async (data) => {
-        //   console.log(data, "test");
-        //   onClose?.();
-        // }}
-      />
-
-    
+      <HotelForm mode="edit" initialData={hotel}/>
     </div>
   );
 }

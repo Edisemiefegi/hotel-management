@@ -51,6 +51,7 @@ function AmenitiesField() {
                   </Button>
                 </span>
               ))}
+              
 
               <input
                 className="flex-1 min-w-[120px] bg-transparent outline-none text-sm"

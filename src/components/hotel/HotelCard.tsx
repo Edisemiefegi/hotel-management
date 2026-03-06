@@ -2,7 +2,8 @@ import { MapPin, Star } from "lucide-react";
 import Card from "../base/Card";
 import { Progress } from "../ui/progress";
 import DropDown from "../base/DropDown";
-import type { Hotel, MenuItem } from "@/types";
+import type {  MenuItem } from "@/types/index";
+import type { Hotel } from "@/types/hotel";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -14,22 +15,24 @@ interface Props {
 
 function HotelCard({ hotel, menu, className, layout = "column" }: Props) {
   const isRow = layout === "row";
+
+  if (!hotel) return null;
   return (
     <Card
       className={cn(
         className,
         isRow ? "flex flex-row h-50 max-h-fit " : "flex flex-col h-80 ",
-        "shadow-none !p-0 border hover:shadow-lg transition-all duration-300    w-full overflow-hidden group",
+        "shadow-none p-0! border hover:shadow-lg transition-all duration-300    w-full overflow-hidden group",
       )}
     >
       <div
         className={cn(
           "overflow-hidden ",
-          isRow ? "w-1/3 h-full" : "w-full h-2/5",
+          isRow ? "w-1/3 h-full" : "w-full h-2/3",
         )}
       >
         <img
-          src={hotel?.images[0]}
+          src={hotel?.images[0] ?? "/placeholder.jpg"}
           className="object-cover overflow-hidden w-full h-full shrink-0 group-hover:scale-105 transition-all duration-300"
           alt=""
         />
@@ -60,12 +63,8 @@ function HotelCard({ hotel, menu, className, layout = "column" }: Props) {
             </span>
           </span>
         </div>
-        <hr />
 
-        <div className="space-y-1">
-          <Progress value={33} />
-          <span className="text-xs"> 33% full</span>
-        </div>
+        
       </section>
     </Card>
   );
