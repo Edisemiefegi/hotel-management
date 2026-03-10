@@ -165,6 +165,7 @@ export const useAdmin = () => {
     const res = promise.rows.map(mapRowToHotel);
 
     setHotels(res);
+    
     return res;
   };
 

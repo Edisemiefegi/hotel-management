@@ -1,11 +1,13 @@
+import Pagination from "@/components/base/Pagination";
 import HotelCard from "@/components/hotel/HotelCard";
 import Filter from "@/components/landingPage/hotels/Filter";
 import SearchHotel from "@/components/landingPage/SearchHotel";
 import { Button } from "@/components/ui/button";
+import { useAdmin } from "@/hooks/useAdmin";
 import { useAdminStore } from "@/store/adminStore";
 import type { amenities } from "@/types/hotel";
 import { SlidersHorizontal } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 interface Filters {
@@ -16,9 +18,13 @@ interface Filters {
 
 function HotelList() {
   const { hotels } = useAdminStore();
+  const { getHotelRooms, getHotels } = useAdmin();
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [hotelRooms, setHotelRooms] = useState<Record<string, any[]>>({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
 
   // Temporary filter state (UI only)
   const [tempFilters, setTempFilters] = useState<Filters>({
@@ -33,6 +39,28 @@ function HotelList() {
     rating: null,
     amenities: [],
   });
+
+  useEffect(() => {
+    const fetchhotels = async () => {
+      await getHotels();
+    };
+
+    const fetchData = async () => {
+      await getHotels();
+
+      const roomsData: Record<string, any[]> = {};
+
+      for (const hotel of hotels) {
+        const rooms = await getHotelRooms(hotel.id);
+        roomsData[hotel.id] = rooms || [];
+      }
+
+      setHotelRooms(roomsData);
+    };
+
+    fetchData();
+    fetchhotels();
+  }, [hotels]);
 
   const openFilter = () => setIsFilterOpen(true);
   const closeFilter = () => setIsFilterOpen(false);
@@ -50,6 +78,7 @@ function HotelList() {
     };
     setTempFilters(defaultFilters);
     setAppliedFilters(defaultFilters);
+    closeFilter();
   };
 
   const filteredHotels = hotels.filter((hotel) => {
@@ -58,9 +87,14 @@ function HotelList() {
       .toLowerCase()
       .includes(search.toLowerCase());
 
-    const matchesPrice = "20000"
-      // hotel.price >= appliedFilters.priceRange[0] &&
-      // hotel.price <= appliedFilters.priceRange[1];
+    const rooms = hotelRooms[hotel.id] || [];
+
+    const matchesPrice =
+      rooms.some(
+        (room) =>
+          room.pricePerNight >= appliedFilters.priceRange[0] &&
+          room.pricePerNight <= appliedFilters.priceRange[1],
+      ) || rooms.length === 0;
 
     const matchesRating = appliedFilters.rating
       ? hotel.rating >= parseFloat(appliedFilters.rating)
@@ -68,11 +102,18 @@ function HotelList() {
 
     const matchesAmenities =
       appliedFilters.amenities.length === 0 ||
-      appliedFilters.amenities.every((a: amenities) => hotel.amenities.includes(a));
+      appliedFilters.amenities.some((a: amenities) =>
+        hotel.amenities.includes(a),
+      );
 
     return matchesSearch && matchesPrice && matchesRating && matchesAmenities;
   });
 
+  const startIndex = (currentPage - 1) * pageSize;
+  const paginatedHotels = filteredHotels.slice(
+    startIndex,
+    startIndex + pageSize,
+  );
   return (
     <main className="container mx-auto px-8 py-20 space-y-10 min-h-screen">
       <header className="space-y-8">
@@ -82,11 +123,7 @@ function HotelList() {
 
       <div className="space-y-2">
         <div className="flex justify-between items-center">
-          <Button
-            variant="outline"
-            onClick={openFilter}
-            className="md:hidden"
-          >
+          <Button variant="outline" onClick={openFilter} className="md:hidden">
             <span className="font-semibold text-lg">Filters</span>
             <SlidersHorizontal size={20} />
           </Button>
@@ -118,7 +155,7 @@ function HotelList() {
 
           {/* Hotels List */}
           <div className="col-span-5 md:col-span-3 space-y-4">
-            {filteredHotels.map((hotel) => (
+            {paginatedHotels.map((hotel) => (
               <Link key={hotel.id} to={`/hotels/${hotel.id}`} className="block">
                 <HotelCard
                   layout="row"
@@ -131,6 +168,17 @@ function HotelList() {
             {filteredHotels.length === 0 && (
               <p className="text-xl text-center">No hotel found</p>
             )}
+            <Pagination
+              totalItems={filteredHotels.length}
+              currentPage={currentPage}
+              pageSize={pageSize}
+              setPageSize={setPageSize}
+              onPageChange={setCurrentPage}
+              onPageSizeChange={(size) => {
+                setPageSize(size);
+                setCurrentPage(1);
+              }}
+            />
           </div>
         </section>
       </div>

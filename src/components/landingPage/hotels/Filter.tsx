@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
 import { SlidersHorizontal, Star } from "lucide-react";
 
-const RATINGS = ["4.5+", "4+", "3.5+", "3+"];
+const RATINGS = ["5+", "4+", "3+", "2+"];
 const AMENITIES = [
   "spa",
   "pool",
@@ -23,7 +23,7 @@ interface Props {
   amenities?: any[];
   setAmenities?: any;
   onSave?: () => void;
-  onClear?: () => void
+  onClear?: () => void;
 }
 
 function Filter({
@@ -34,7 +34,7 @@ function Filter({
   amenities = [],
   setAmenities,
   onSave,
-  onClear
+  onClear,
 }: Props) {
   // const [priceRange, setPriceRange] = useState([20000, 40000]);
 
