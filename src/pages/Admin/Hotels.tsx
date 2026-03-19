@@ -38,7 +38,7 @@ export default function Hotels() {
     getHotelsList();
   }, []);
 
-  const filteredHotels = hotelsData.filter((hotel) =>
+  const filteredHotels = hotelsData.filter((hotel: any) =>
     [hotel.name, hotel.location]
       .join(" ")
       .toLowerCase()
