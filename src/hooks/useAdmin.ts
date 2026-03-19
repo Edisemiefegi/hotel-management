@@ -1,57 +1,114 @@
 import { ID, storage, tableDB } from "@/appwriteConfig";
 import type { HotelFormType } from "@/schemas/hotel.schema";
 import { useAdminStore } from "@/store/adminStore";
-import type { Addon,  Room } from "@/types/hotel";
-import { Query, type Models } from "appwrite";
+import type { Addon, Room } from "@/types/hotel";
 
 const db_Id = "admin-id";
 const hotel_Id = "hotels";
-const bucket_Id = "hotel_Images";
+const bucket_Id = "hotel_image";
 const room_Id = "rooms";
 const addons_Id = "addons";
 
 export const useAdmin = () => {
-  const { setHotels, setRooms } = useAdminStore();
+  const { hotels, setHotels, setRooms,setHydrated, setAddons } =
+    useAdminStore();
 
-  const mapRowToHotel = (row: Models.DefaultRow): any => ({
-    id: row.$id,
-    name: row.name,
-    location: row.location,
-    rating: row.rating,
-    reviews: row.reviews ?? [],
-    images: (row.images ?? []).map((fileId: string) =>
-      storage.getFileDownload({ bucketId: bucket_Id, fileId }),
-    ),
-    amenities: row.amenities ?? [],
-    status: row.status,
-    whatsapp: row.whatsapp,
-    rooms: [],
-    description: row.description,
-    addons: row.addons ?? [],
-  });
-
-  const uplaodImage = async (images: any, id: string) => {
-    const uploadedIds: string[] = [];
-    if (images.length > 0) {
-      for (const file of images) {
-        if (file instanceof File) {
-          const fileId = ID.unique();
-          const upload = await storage.createFile({
-            bucketId: id,
-            fileId: fileId,
-            file: file,
-          });
-
-          uploadedIds.push(upload.$id);
-        }
-      }
-    }
-
-    return uploadedIds;
+    console.log("Bucket ID:", bucket_Id);
+  const getImageUrl = (fileId: string) => {
+    
+    return `https://fra.cloud.appwrite.io/v1/storage/buckets/${bucket_Id}/files/${fileId}/view?project=hotelmanagement-id&mode=admin`;
   };
 
+  const uploadImages = async (files: File[], bucketId: string) => {
+    if (!files || files.length === 0) return [];
+
+    const uploads = files.map((file) => {
+      const fileId = ID.unique();
+      return storage.createFile({
+        bucketId,
+        fileId,
+        file,
+      });
+    });
+
+    const results = await Promise.all(uploads);
+    return results.map((res) => res.$id);
+  };
+
+  const fetchAllData = async () => {
+    const state = useAdminStore.getState();
+
+    if (state.isHydrated) {
+      console.log("USING CLEAN CACHED DATA ✅");
+      return state.hotels;
+    }
+    const [hotelRes, roomRes, addonRes] = await Promise.all([
+      tableDB.listRows({
+        databaseId: db_Id,
+        tableId: hotel_Id,
+      }),
+      tableDB.listRows({
+        databaseId: db_Id,
+        tableId: room_Id,
+      }),
+      tableDB.listRows({
+        databaseId: db_Id,
+        tableId: addons_Id,
+      }),
+    ]);
+
+    const roomsData = roomRes.rows.map((room: any) => ({
+      ...room,
+      image: room.image ? getImageUrl(room.image) : null,
+    }));
+
+    const addonsData = addonRes.rows.map((addon: any) => ({
+      id: addon.$id,
+      addonName: addon.addonName,
+      price: addon.price,
+      description: addon.description,
+      icon: addon.icon,
+      hotelId: addon.hotelId,
+    }));
+
+    const hotelsData: any = hotelRes?.rows.map((hotel: any) => {
+      const hotelRooms = roomsData.filter((room) => room.hotelId === hotel.$id);
+
+      const hotelAddons = addonsData.filter(
+        (addon) => addon.hotelId === hotel.$id,
+      );
+
+      return {
+        id: hotel.$id,
+        name: hotel.name,
+        location: hotel.location,
+        rating: hotel.rating,
+        reviews: hotel.reviews ?? [],
+        images: (hotel.images ?? []).map(getImageUrl),
+        amenities: hotel.amenities ?? [],
+        status: hotel.status,
+        whatsapp: hotel.whatsapp,
+        description: hotel.description,
+        rooms: hotelRooms,
+        addons: hotelAddons,
+      };
+    });
+
+    setHotels(hotelsData);
+    setRooms(roomsData);
+    setAddons(addonsData);
+    setHydrated(true);
+
+    return hotelsData;
+  };
+
+  // const getRoomsByHotel = (hotelId: string) => {
+  //     const state = useAdminStore.getState();
+  //     return state.rooms.filter((room: any) => room.hotelId === hotelId);
+  //   };
+
   const addHotel = async (form: HotelFormType) => {
-    const uploadedFileIds = await uplaodImage(form?.images, bucket_Id);
+    const uploadedFileIds = await uploadImages(form?.images, bucket_Id);
     const hotel = {
       name: form.name,
       location: form.location,
@@ -71,11 +128,21 @@ export const useAdmin = () => {
       data: hotel,
     });
 
+    const newHotel: any = {
+      ...hotel,
+      id: res.$id,
+      images: uploadedFileIds?.map(getImageUrl),
+    };
+
+    setHotels([newHotel, ...useAdminStore.getState().hotels]);
+    console.log(hotels, "testingß");
+
     return res;
   };
 
   const addRoom = async (form: Room, hotelId: string) => {
-    const uploadedFileIds = await uplaodImage(form?.image, bucket_Id);
+    const files = form.image ? [form.image] : [];
+    const uploadedFileIds = await uploadImages(files, bucket_Id);
 
     const room = {
       type: form.type,
@@ -88,113 +155,66 @@ export const useAdmin = () => {
       status: form.status,
       hotelId: hotelId,
     };
-    const RoomData = { ...room };
 
-    await tableDB.createRow({
+    const res = await tableDB.createRow({
       databaseId: db_Id,
       tableId: room_Id,
       rowId: ID.unique(),
-      data: RoomData,
+      data: room,
     });
+
+    const newRoom = {
+      ...room,
+      id: res.$id,
+      image: getImageUrl(uploadedFileIds[0]),
+    };
+
+    setRooms([newRoom, ...useAdminStore.getState().rooms]);
   };
 
   const handleAddon = async (form: Addon, hotelId: string) => {
-    const Addons = {
+    const addon = {
       addonName: form.addonName,
       price: form.price,
       description: form.description,
       icon: form.icon,
-      hotelId: hotelId,
+      hotelId,
     };
 
-    await tableDB.createRow({
+    const res = await tableDB.createRow({
       databaseId: db_Id,
       tableId: addons_Id,
       rowId: ID.unique(),
-      data: Addons,
+      data: addon,
     });
+
+    const newAddon = {
+      ...addon,
+      id: res.$id,
+    };
+
+    setAddons([newAddon, ...useAdminStore.getState().addons]);
   };
 
-  const getHotelAddons = async (hotelId: string) => {
-    if (!hotelId) {
-      console.error("hotelId is missing");
-      return [];
-    }
-    const response = await tableDB.listRows({
-      databaseId: db_Id,
-      tableId: addons_Id,
-      queries: [Query.equal("hotelId", hotelId)],
-    });
+  // const getAddonsByHotel = (hotelId: string) => {
+  //   const state = useAdminStore.getState();
+  //   return state.addons.filter((addon: any) => addon.hotelId === hotelId);
+  // };
 
-    return response.rows;
-  };
+  // const getHotels = async () => {
+  //   if (hotels.length > 0) return hotels;
+  //   const promise = await tableDB.listRows({
+  //     databaseId: db_Id,
+  //     tableId: hotel_Id,
+  //   });
 
-  const getHotelRooms = async (hotelId: string) => {
-    if (!hotelId) {
-      console.error("hotelId is missing");
-      return [];
-    }
-    const response = await tableDB.listRows({
-      databaseId: db_Id,
-      tableId: room_Id,
-      queries: [Query.equal("hotelId", hotelId)],
-    });
-    const result = response.rows.map((e) => {
-      const image = e.image;
+  //   const res = promise.rows.map(mapRowToHotel);
 
-      const imageUrl = storage.getFileDownload({
-        bucketId: bucket_Id,
-        fileId: image,
-      });
+  //   setHotels(res);
 
-      return {
-        ...e,
-        imageUrl,
-      };
-    });
+  //   return res;
+  // };
 
-    return result;
-  };
-
-  const getHotels = async () => {
-    const promise = await tableDB.listRows({
-      databaseId: db_Id,
-      tableId: hotel_Id,
-    });
-
-    const res = promise.rows.map(mapRowToHotel);
-
-    setHotels(res);
-    
-    return res;
-  };
-
-  const getRooms = async () => {
-    const promise = await tableDB.listRows({
-      databaseId: db_Id,
-      tableId: room_Id,
-    });
-
-    const res = promise.rows;
-    const rooms = await Promise.all(
-      res.map(async (room) => {
-        if (!room.image) return room;
-
-        const file = await storage.getFileDownload({
-          bucketId: bucket_Id,
-          fileId: room.image,
-        });
-
-        return {
-          ...room,
-          image: file,
-        };
-      }),
-    );
-
-    setRooms(rooms);
-    return rooms;
-  };
 
   const deleteHotel = async (id: string) => {
     const result = await tableDB.deleteRow({
@@ -203,17 +223,21 @@ export const useAdmin = () => {
       rowId: id,
     });
 
+    const state = useAdminStore.getState();
+    setHotels(state.hotels.filter((h: any) => h.id !== id));
+
     console.log(result);
   };
 
   return {
+    fetchAllData,
+    // getRoomsByHotel,
     addHotel,
-    getHotels,
+    // getHotels,
     deleteHotel,
     addRoom,
-    getHotelRooms,
     handleAddon,
-    getHotelAddons,
-    getRooms,
+    // getAddonsByHotel,
+    // getRooms,
   };
 };

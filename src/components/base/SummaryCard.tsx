@@ -12,7 +12,7 @@ function SummaryCard({ title, text, number, status, image }: Props) {
       <div className="flex gap-1">
         <span className="w-12 h-12 rounded-md overflow-hidden">
           {" "}
-          <img src={image} alt="" className="" />
+          <img loading="lazy" src={image} alt="" className="" />
         </span>{" "}
         <div>
           <p className="font-medium">{title}</p>

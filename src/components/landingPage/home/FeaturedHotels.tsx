@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 function FeaturedHotels() {
   const { hotels } = useAdminStore();
-  const visibleHotels = [...hotels, ...hotels, ...hotels].slice(0, 3);
+  const visibleHotels = hotels.slice(0, 3);
 
   return (
     <div className="space-y-12 ">

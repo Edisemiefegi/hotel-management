@@ -1,10 +1,7 @@
 import { Dot, MapPin, Phone, Star } from "lucide-react";
 import SummaryCard from "../base/SummaryCard";
 import { cn } from "@/lib/utils";
-import { useEffect, useState, type Key } from "react";
 import { hotelAmenities } from "./AmenitySelector";
-import { useAdmin } from "@/hooks/useAdmin";
-import type { Models } from "appwrite";
 import AddonInfo from "../addons/AddonInfo";
 
 interface Props {
@@ -12,23 +9,7 @@ interface Props {
 }
 
 function ViewHotel({ hotel }: Props) {
-  const { getHotelRooms, getHotelAddons } = useAdmin();
-  const [rooms, setRooms] = useState<Models.DefaultRow[]>([]);
-  const [addons, setAddons] = useState<Models.DefaultRow[]>([]);
-
-  useEffect(() => {
-    const fetchdata = async () => {
-      if (!hotel?.id) return;
-
-      const res = await getHotelRooms(hotel?.id);
-      const addon = await getHotelAddons(hotel?.id);
-
-      setRooms(res);
-      setAddons(addon);
-    };
-
-    fetchdata();
-  }, [hotel.id]);
+  console.log(hotel, "shjsj");
 
   return (
     <div className="space-y-4  ">
@@ -63,8 +44,9 @@ function ViewHotel({ hotel }: Props) {
         <span>+234 {hotel.whatsapp}</span>
       </p>
       <div className="p-3  bg-gray-50  gap-3 grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 w-full overflow-x-auto rounded-md">
-        {hotel?.images.map((img: string, index: Key | null) => (
+        {hotel?.images.map((img: string, index: number) => (
           <img
+            loading="lazy"
             key={index}
             src={img}
             alt={hotel.name}
@@ -106,12 +88,12 @@ function ViewHotel({ hotel }: Props) {
 
       <div className="space-y-1">
         <p className="font-medium">Rooms ({hotel.rooms.length})</p>
-        {rooms.length == 0 ? (
+        {hotel.rooms.length == 0 ? (
           <p className="text-gray">No room added yet</p>
         ) : (
           <div className="space-y-2">
             {" "}
-            {rooms.map((item: any, index: number) => (
+            {hotel.rooms.map((item: any, index: number) => (
               <SummaryCard
                 key={index}
                 status={item.status}
@@ -128,9 +110,9 @@ function ViewHotel({ hotel }: Props) {
       </div>
 
       <div className="space-y-1">
-        <p className="font-medium">Add-ons (4)</p>
+        <p className="font-medium">Add-ons ({hotel.addons.length})</p>
         <div className="space-y-2">
-          {addons?.map((item, index) => (
+          {hotel.addons?.map((item: any, index: number) => (
             <AddonInfo
               key={index}
               price={item.price}

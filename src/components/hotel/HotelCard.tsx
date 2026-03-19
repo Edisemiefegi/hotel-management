@@ -31,6 +31,7 @@ function HotelCard({ hotel, menu, className, layout = "column" }: Props) {
         )}
       >
         <img
+        loading="lazy"
           src={hotel?.images[0] ?? "/placeholder.jpg"}
           className="object-cover overflow-hidden w-full h-full shrink-0 group-hover:scale-105 transition-all duration-300"
           alt=""

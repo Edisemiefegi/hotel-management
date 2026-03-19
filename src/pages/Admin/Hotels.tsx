@@ -13,7 +13,6 @@ import ManageHotel from "@/components/hotel/MangeHotel";
 import AddHotel from "@/components/hotel/AddHotel";
 import { useAdmin } from "@/hooks/useAdmin";
 import { useEffect, useState } from "react";
-import { useAdminStore } from "@/store/adminStore";
 import Dialog from "@/components/base/Dialog";
 
 export default function Hotels() {
@@ -21,10 +20,10 @@ export default function Hotels() {
   const navigate = useNavigate();
   const [modal, setModal] = usePersistentState("modal", false);
   const [isGrid, setIsGrid] = usePersistentState("hotelsView", false);
-  const { getHotels, deleteHotel } = useAdmin();
-  const { hotels } = useAdminStore();
+  const { fetchAllData, deleteHotel } = useAdmin();
   const [search, setSearch] = useState("");
 
+  const [hotelsData, setHotelsData] = useState([]);
   const [showdialog, setShowDialog] = useState(false);
   const [selectedHotelId, setSelectedHotelId] = useState<string | null>(null);
 
@@ -33,13 +32,13 @@ export default function Hotels() {
 
   useEffect(() => {
     const getHotelsList = async () => {
-      await getHotels();
+      const data = await fetchAllData();
+      setHotelsData(data);
     };
-
     getHotelsList();
-  }, [hotels]);
+  }, []);
 
-  const filteredHotels = hotels.filter((hotel) =>
+  const filteredHotels = hotelsData.filter((hotel) =>
     [hotel.name, hotel.location]
       .join(" ")
       .toLowerCase()
@@ -111,8 +110,12 @@ export default function Hotels() {
 
       {!isGrid ? (
         <section className="grid xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
-          {filteredHotels.map((hotel) => (
-            <HotelCard key={hotel.id} hotel={hotel} menu={menu(hotel)}></HotelCard>
+          {filteredHotels.map((hotel: any) => (
+            <HotelCard
+              key={hotel?.id}
+              hotel={hotel}
+              menu={menu(hotel)}
+            ></HotelCard>
           ))}
         </section>
       ) : (

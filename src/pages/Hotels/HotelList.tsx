@@ -3,11 +3,10 @@ import HotelCard from "@/components/hotel/HotelCard";
 import Filter from "@/components/landingPage/hotels/Filter";
 import SearchHotel from "@/components/landingPage/SearchHotel";
 import { Button } from "@/components/ui/button";
-import { useAdmin } from "@/hooks/useAdmin";
 import { useAdminStore } from "@/store/adminStore";
 import type { amenities } from "@/types/hotel";
 import { SlidersHorizontal } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 interface Filters {
@@ -18,11 +17,9 @@ interface Filters {
 
 function HotelList() {
   const { hotels } = useAdminStore();
-  const { getHotelRooms, getHotels } = useAdmin();
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const [hotelRooms, setHotelRooms] = useState<Record<string, any[]>>({});
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
 
@@ -39,28 +36,6 @@ function HotelList() {
     rating: null,
     amenities: [],
   });
-
-  useEffect(() => {
-    const fetchhotels = async () => {
-      await getHotels();
-    };
-
-    const fetchData = async () => {
-      await getHotels();
-
-      const roomsData: Record<string, any[]> = {};
-
-      for (const hotel of hotels) {
-        const rooms = await getHotelRooms(hotel.id);
-        roomsData[hotel.id] = rooms || [];
-      }
-
-      setHotelRooms(roomsData);
-    };
-
-    fetchData();
-    fetchhotels();
-  }, [hotels]);
 
   const openFilter = () => setIsFilterOpen(true);
   const closeFilter = () => setIsFilterOpen(false);
@@ -81,20 +56,20 @@ function HotelList() {
     closeFilter();
   };
 
-  const filteredHotels = hotels.filter((hotel) => {
+  const filteredHotels = hotels?.filter((hotel: any) => {
     const matchesSearch = [hotel.name, hotel.location]
       .join(" ")
       .toLowerCase()
       .includes(search.toLowerCase());
 
-    const rooms = hotelRooms[hotel.id] || [];
+    // const rooms = hotel?.rooms || [];
 
-    const matchesPrice =
-      rooms.some(
-        (room) =>
-          room.pricePerNight >= appliedFilters.priceRange[0] &&
-          room.pricePerNight <= appliedFilters.priceRange[1],
-      ) || rooms.length === 0;
+    const matchesPrice = 500000;
+    // rooms.some(
+    //   (room: any) =>
+    //     room.pricePerNight >= appliedFilters.priceRange[0] &&
+    //     room.pricePerNight <= appliedFilters.priceRange[1],
+    // ) || rooms.length === 0;
 
     const matchesRating = appliedFilters.rating
       ? hotel.rating >= parseFloat(appliedFilters.rating)
@@ -155,7 +130,7 @@ function HotelList() {
 
           {/* Hotels List */}
           <div className="col-span-5 md:col-span-3 space-y-4">
-            {paginatedHotels.map((hotel) => (
+            {paginatedHotels.map((hotel: any) => (
               <Link key={hotel.id} to={`/hotels/${hotel.id}`} className="block">
                 <HotelCard
                   layout="row"

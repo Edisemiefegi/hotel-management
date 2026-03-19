@@ -16,7 +16,8 @@ export type Hotel = {
   status: "Operational" | "Closed" | "Renovation";
   whatsapp: string;
   description: string;
-  addons: string[]
+  // addons: string[]
+  
 };
 
 export type Room = {

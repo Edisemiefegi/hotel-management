@@ -2,31 +2,16 @@ import SummaryCard from "@/components/base/SummaryCard";
 import { hotelAmenities } from "@/components/hotel/AmenitySelector";
 import BookingLayout from "@/components/landingPage/booking/BookingLayout";
 import { Button } from "@/components/ui/button";
-import { useAdmin } from "@/hooks/useAdmin";
 import { useAdminStore } from "@/store/adminStore";
 import { ChevronLeft, Heart, MapPin, Share, Star } from "lucide-react";
-import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 function HotelDetail() {
   const { id } = useParams();
 
   const { hotels } = useAdminStore();
-  const { getHotelRooms } = useAdmin();
 
   const hotel = hotels.find((e) => e.id === id);
-
-  const [hotelRooms, setHotelRooms] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!id) return;
-      const rooms: any = await getHotelRooms(id);
-      setHotelRooms(rooms);
-    };
-
-    fetchData();
-  }, [hotel]);
 
   if (!hotel) {
     return <p className="text-center py-20">Hotel not found</p>;
@@ -68,6 +53,7 @@ function HotelDetail() {
       <section className="grid grid-flow-col auto-cols-[80%] gap-4 overflow-x-auto md:auto-cols-auto md:grid-cols-4 md:grid-rows-2 md:overflow-x-visible">
         {hotel?.images.map((item, index) => (
           <img
+            loading="lazy"
             key={index}
             src={item}
             alt=""
@@ -115,7 +101,7 @@ function HotelDetail() {
           <h1 className="text-lg">Hotel Rooms</h1>
 
           <div className="space-y-3">
-            {hotelRooms?.map((room: any, index: number) => (
+            {hotel.rooms?.map((room: any, index: number) => (
               <SummaryCard
                 key={index}
                 status={room.status}

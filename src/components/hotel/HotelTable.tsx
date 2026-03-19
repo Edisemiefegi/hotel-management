@@ -30,6 +30,7 @@ function HotelTable({ menu }: Props) {
       render: (row: any) => (
         <div className="flex gap-3">
           <img
+          loading="lazy"
             src={row.images[0]}
             alt=""
             className="w-12 h-12 rounded-lg"
